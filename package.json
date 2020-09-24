@@ -1,0 +1,57 @@
+{
+  "name": "homebridge-stagg-ekg-plus",
+  "version": "1.0.0",
+  "description": "Homebridge plugin for the Stagg EKG+ electric kettle",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon",
+    "build": "tsc",
+    "start": "node dist/index",
+    "lint": "eslint . --ext .ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "bunyan": "^1.8.14",
+    "date-fns": "^2.16.1",
+    "express": "^4.17.1",
+    "hap-nodejs": "^0.8.2",
+    "reflect-metadata": "^0.1.13",
+    "sqlite3": "^5.0.0",
+    "typeorm": "^0.2.26"
+  },
+  "devDependencies": {
+    "@types/body-parser": "^1.19.0",
+    "@types/bunyan": "^1.8.6",
+    "@types/date-fns": "^2.6.0",
+    "@types/express": "^4.17.8",
+    "@types/node": "^14.11.1",
+    "@typescript-eslint/eslint-plugin": "^4.1.1",
+    "@typescript-eslint/parser": "^4.1.1",
+    "eslint": "^7.9.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "node-dev": "^5.2.0",
+    "nodemon": "^2.0.4",
+    "prettier": "^2.1.2",
+    "rimraf": "^3.0.2",
+    "ts-node": "^9.0.0",
+    "ts-node-dev": "^1.0.0-pre.63",
+    "typescript": "^4.0.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/philscott-dev/homebridge-stagg-ekg-plus.git"
+  },
+  "keywords": [
+    "homebridge",
+    "stagg",
+    "ekg"
+  ],
+  "author": "Phil Scott",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/philscott-dev/homebridge-stagg-ekg-plus/issues"
+  },
+  "homepage": "https://github.com/philscott-dev/homebridge-stagg-ekg-plus#readme"
+}
