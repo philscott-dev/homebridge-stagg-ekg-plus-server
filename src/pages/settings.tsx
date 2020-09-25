@@ -1,7 +1,6 @@
 import type { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
-import styled from '@emotion/styled'
 import { FiX } from 'react-icons/fi'
 import {
   H1,
@@ -13,6 +12,8 @@ import {
   Error,
   SelectPlaceholder,
   Anchor,
+  FormSection,
+  FormButton as Button,
 } from '../components'
 
 const SettingsPage: NextPage = () => {
@@ -45,7 +46,7 @@ const SettingsPage: NextPage = () => {
         autoComplete="off"
         onSubmit={handleSubmit}
       >
-        <Wrap>
+        <FormSection>
           <Error name="units" />
           <Select
             placeholder="Units"
@@ -57,8 +58,8 @@ const SettingsPage: NextPage = () => {
             <option value={'fahrenheit'}>Fahrenheit</option>
             <option value={'celsius'}>Celsius</option>
           </Select>
-        </Wrap>
-        <Wrap>
+        </FormSection>
+        <FormSection>
           <Error name="time" />
           <Select
             placeholder="Time"
@@ -70,16 +71,13 @@ const SettingsPage: NextPage = () => {
             <option value={'12'}>12 Hour</option>
             <option value={'24'}>24 Hour</option>
           </Select>
-        </Wrap>
+        </FormSection>
+        <FormSection>
+          <Button>Confirm</Button>
+        </FormSection>
       </Form>
     </>
   )
 }
 
 export default SettingsPage
-
-const Wrap = styled.div`
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-`

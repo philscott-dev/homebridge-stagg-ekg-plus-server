@@ -2,7 +2,7 @@ import type { NextPage } from 'next'
 import Link from 'next/link'
 import useSWR from 'swr'
 import { useRouter } from 'next/router'
-import { FiSettings } from 'react-icons/fi'
+import { FiEdit } from 'react-icons/fi'
 import { fetchKettle } from '../../../../../services/kettle'
 import {
   Heading,
@@ -34,7 +34,7 @@ const IndexPage: NextPage = () => {
           as={'/kettle/1/schedule/1/edit'}
         >
           <IconButton>
-            <FiSettings />
+            <FiEdit />
           </IconButton>
         </Link>
       </Heading>

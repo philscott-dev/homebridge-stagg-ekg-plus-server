@@ -160,7 +160,7 @@ export const successToNormal = css`
 `
 
 export default styled(Button)`
-  display: flex;
+  display: block;
   font-size: 16px;
   justify-content: space-between;
   white-space: nowrap;
@@ -178,21 +178,22 @@ export default styled(Button)`
     opacity: 0.5;
     pointer-events: none;
   }
-  @media screen and (max-width: ${({ theme }) => theme.breakpoint.small}) {
+  /* @media screen and (max-width: ${({ theme }) => theme.breakpoint.small}) {
     display: block;
     width: 100%;
-  }
+  } */
 
-  font-weight: 300;
+  margin-top: 40px;
+  min-height: 56px;
+  text-transform: uppercase;
+  font-weight: 400;
   font-family: ${({ theme }) => theme.font.family};
-  color: ${({ theme }) => theme.color.white[100]};
-  background: ${({ theme }) => theme.color.blue[400]};
-  border-color: ${({ theme }) => theme.color.blue[400]};
-  box-shadow: ${({ theme }) => theme.shadow.up.one};
+  color: ${({ theme }) => theme.color.black[700]};
+  background: ${({ theme }) => theme.color.peach[300]};
+  border-color: ${({ theme }) => theme.color.peach[300]};
   &:hover {
-    color: ${({ theme }) => theme.color.white[100]};
-    background: ${({ theme }) => theme.color.blue[300]};
-    box-shadow: ${({ theme }) => theme.shadow.up.two};
-    border-color: ${({ theme }) => theme.color.blue[300]};
+    color: ${({ theme }) => theme.color.black[700]};
+    background: ${({ theme }) => theme.color.peach[200]};
+    border-color: ${({ theme }) => theme.color.peach[200]};
   }
 `

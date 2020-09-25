@@ -1,19 +1,18 @@
 import type { NextPage } from 'next'
-import useSWR from 'swr'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { FiX } from 'react-icons/fi'
-import { fetchKettle } from '../../../../services/kettle'
 import {
   Heading,
   H1,
   H2,
-  H6,
-  Text,
-  ListItem,
-  Attribute,
   Anchor,
   IconButton,
+  Form,
+  Input,
+  Error,
+  FormSection,
+  FormButton as Button,
 } from '../../../../components'
 
 const ScheduleAddPage: NextPage = () => {
@@ -23,6 +22,8 @@ const ScheduleAddPage: NextPage = () => {
   const handleBack = () => {
     router.back()
   }
+
+  const handleSubmit = () => {}
 
   return (
     <>
@@ -39,6 +40,29 @@ const ScheduleAddPage: NextPage = () => {
           <FiX />
         </IconButton>
       </Heading>
+      <Form
+        loading={false}
+        error={undefined}
+        rules={{}}
+        autoComplete="off"
+        onSubmit={handleSubmit}
+      >
+        <FormSection>
+          <Error name="name" />
+          <Input type="text" name="name" placeholder={'Name'} />
+        </FormSection>
+        <FormSection>
+          <Error name="on" />
+          <Input type="time" name="on" placeholder={'Start Time'} />
+        </FormSection>
+        <FormSection>
+          <Error name="off" />
+          <Input type="time" name="off" placeholder={'End Time'} />
+        </FormSection>
+        <FormSection>
+          <Button>Confirm</Button>
+        </FormSection>
+      </Form>
     </>
   )
 }

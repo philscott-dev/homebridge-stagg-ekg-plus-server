@@ -2,7 +2,7 @@ import type { NextPage } from 'next'
 import Link from 'next/link'
 import useSWR from 'swr'
 import { useRouter } from 'next/router'
-import { FiSettings } from 'react-icons/fi'
+import { FiEdit } from 'react-icons/fi'
 import { fetchKettle } from '../../../services/kettle'
 import {
   Heading,
@@ -31,7 +31,7 @@ const IndexPage: NextPage = () => {
         </div>
         <Link href={'[kid]/edit'} as={'1/edit'} passHref>
           <IconButton>
-            <FiSettings />
+            <FiEdit />
           </IconButton>
         </Link>
       </Heading>

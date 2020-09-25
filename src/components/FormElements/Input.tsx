@@ -34,9 +34,9 @@ export default styled.input<InputProps>`
   border-radius: 2px;
   border: 2px solid
     ${({ theme, error }) =>
-      !error ? theme.color.blue[400] : theme.color.red[300]};
+      !error ? theme.color.peach[100] : theme.color.red[300]};
   color: ${({ theme }) => theme.color.white[100]};
-  background: ${({ theme }) => theme.color.blue[500]};
+  background: ${({ theme }) => theme.color.black[700]};
   &::placeholder {
     color: ${({ theme }) => theme.color.gray[200]};
     font-family: ${({ theme }) => theme.font.family};

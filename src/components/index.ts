@@ -10,6 +10,7 @@ export { Anchor } from './Anchor'
 export {
   Form,
   Input,
+  FormSection,
   Textarea,
   FormButton,
   Select,

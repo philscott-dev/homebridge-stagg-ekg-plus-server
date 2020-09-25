@@ -18,10 +18,10 @@ const H2 = styled.h2<H2Props>`
   font-weight: 600;
   font-family: ${({ theme }) => theme.font.family};
   color: ${({ theme }) => theme.color.gray[300]};
-  @media screen and (max-width: ${({ theme }) => theme.breakpoint.small}) {
+  /* @media screen and (max-width: ${({ theme }) => theme.breakpoint.small}) {
     font-size: 26px;
     line-height: 28px;
-  }
+  } */
 `
 
 function sizes({ size, theme }: { size?: Sizes; theme: Theme }) {

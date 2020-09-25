@@ -13,7 +13,7 @@ export interface ButtonProps {
 
 const Button = styled.button<ButtonProps>`
   ${sizes};
-  display: flex;
+  display: block;
   justify-content: space-between;
   white-space: nowrap;
   align-items: center;
@@ -32,10 +32,7 @@ const Button = styled.button<ButtonProps>`
     opacity: 0.5;
     pointer-events: none;
   }
-  @media screen and (max-width: ${({ theme }) => theme.breakpoint.small}) {
-    display: block;
-    width: 100%;
-  }
+
 `
 
 const Primary = styled(Button)`
