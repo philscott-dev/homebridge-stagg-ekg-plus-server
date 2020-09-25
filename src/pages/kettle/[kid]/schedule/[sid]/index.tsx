@@ -39,12 +39,12 @@ const IndexPage: NextPage = () => {
         </Link>
       </Heading>
       <Attribute>
-        <H6>time</H6>
-        <Text>08:24 AM - 12:53 PM</Text>
-      </Attribute>
-      <Attribute>
         <H6>status</H6>
         <Text>enabled</Text>
+      </Attribute>
+      <Attribute>
+        <H6>time</H6>
+        <Text>08:24 AM - 12:53 PM</Text>
       </Attribute>
     </>
   )

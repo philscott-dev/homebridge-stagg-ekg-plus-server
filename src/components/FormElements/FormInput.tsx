@@ -25,6 +25,15 @@ export interface FormInputProps {
   tabIndex?: number
   inputSize?: Size
   shouldShowLabel?: boolean
+  inputMode?:
+    | 'text'
+    | 'none'
+    | 'tel'
+    | 'url'
+    | 'email'
+    | 'numeric'
+    | 'decimal'
+    | 'search'
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void
 }
 

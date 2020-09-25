@@ -3,7 +3,7 @@ import Link from 'next/link'
 import useSWR from 'swr'
 import { useRouter } from 'next/router'
 import { FiEdit } from 'react-icons/fi'
-import { fetchKettle } from '../../../services/kettle'
+import { getKettle, KettleResponse } from '../../../services/kettle'
 import {
   Heading,
   H1,
@@ -15,9 +15,15 @@ import {
   Anchor,
   IconButton,
 } from '../../../components'
+import { Status } from '../../../enums'
 
 const IndexPage: NextPage = () => {
   const router = useRouter()
+  const { data, error } = useSWR<KettleResponse>(
+    [`/kettle/${router.query.kid}`],
+    getKettle,
+  )
+
   return (
     <>
       <Heading>
@@ -27,9 +33,9 @@ const IndexPage: NextPage = () => {
               <H1>EKG+</H1>
             </Anchor>
           </Link>
-          <H2>phil's kettle</H2>
+          <H2>{data?.name}</H2>
         </div>
-        <Link href={'[kid]/edit'} as={'1/edit'} passHref>
+        <Link href={'[kid]/edit'} as={`${data?.id}/edit`} passHref>
           <IconButton>
             <FiEdit />
           </IconButton>
@@ -37,17 +43,27 @@ const IndexPage: NextPage = () => {
       </Heading>
       <Attribute>
         <H6>status</H6>
-        <Text>Connected</Text>
+        <Text>
+          {data?.status === Status.Connected ? 'connected' : 'disconnected'}
+        </Text>
       </Attribute>
       <Attribute>
         <H6>mac address</H6>
-        <Text>00:1C:97:19:54:A2</Text>
+        <Text>{data?.macAddress}</Text>
       </Attribute>
       <H6>schedule</H6>
-      <Link href={'[kid]/schedule/[sid]'} as={'1/schedule/1'} passHref>
+      <Link
+        href={'[kid]/schedule/[sid]'}
+        as={`${data?.id}/schedule/1`}
+        passHref
+      >
         <ListItem title={'WAKE UP'} subtitle={'08:24 AM - 12:53 PM'} />
       </Link>
-      <Link href={'[kid]/schedule/add'} as={'1/schedule/add'} passHref>
+      <Link
+        href={'[kid]/schedule/add'}
+        as={`${data?.id}/schedule/add`}
+        passHref
+      >
         <ListItem isEmpty title={'New Schedule'} subtitle={'Tap to add'} />
       </Link>
     </>

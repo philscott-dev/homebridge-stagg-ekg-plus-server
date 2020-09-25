@@ -60,8 +60,19 @@ const ScheduleEditPage: NextPage = () => {
           <Input type="time" name="off" placeholder={'Off'} />
         </FormSection>
         <FormSection>
+          <Error name="temperature" />
+          <Input
+            type="number"
+            name="temperature"
+            placeholder={'Temperature'}
+            inputMode="numeric"
+            min="104"
+            max="212"
+          />
+        </FormSection>
+        <FormSection>
           <Submit>Confirm</Submit>
-          <Anchor.Delete>Delete</Anchor.Delete>
+          <Anchor.Delete>Delete Schedule</Anchor.Delete>
         </FormSection>
       </Form>
     </>

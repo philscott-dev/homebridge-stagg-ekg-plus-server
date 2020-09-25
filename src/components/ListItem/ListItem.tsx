@@ -33,7 +33,7 @@ export default ListItem
 
 const Anchor = styled.a<{ isEmpty: boolean }>`
   flex: 1;
-  max-width: 350px;
+  max-width: ${({ theme }) => theme.breakpoint.small};
   text-align: left;
   border-width: 2px;
   padding: 24px 16px;

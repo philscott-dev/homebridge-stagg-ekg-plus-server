@@ -2,7 +2,7 @@ import { AbstractRepository, EntityRepository } from 'typeorm'
 import ScheduleEntity from '../entity/ScheduleEntity'
 
 @EntityRepository(ScheduleEntity)
-export default class ApplicationRepository extends AbstractRepository<
+export default class ScheduleRepository extends AbstractRepository<
   ScheduleEntity
 > {
   async create(): Promise<ScheduleEntity> {

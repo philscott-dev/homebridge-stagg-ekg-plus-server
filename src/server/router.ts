@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import { getCustomRepository } from 'typeorm'
-import { KettleRepository } from './repository'
+import { KettleRepository, SettingsRepository } from './repository'
 import { asyncHandler } from './utils/asyncHandler'
 export const router = Router()
 
@@ -73,7 +73,9 @@ router.patch(
 router.delete(
   '/kettle/:id',
   asyncHandler(async (req, res) => {
-    res.json({})
+    const repo = getCustomRepository(KettleRepository)
+    const result = await repo.deleteById(req.params.id)
+    res.json(result)
   }),
 )
 
@@ -108,5 +110,31 @@ router.delete(
   '/kettle/:id/schedule/:id',
   asyncHandler(async (req, res) => {
     res.json({})
+  }),
+)
+
+/**
+ * Settings
+ */
+
+router.get(
+  '/settings',
+  asyncHandler(async (req, res) => {
+    const repo = getCustomRepository(SettingsRepository)
+    const settings = await repo.findOrCreate()
+    res.json(settings)
+  }),
+)
+
+router.patch(
+  '/settings',
+  asyncHandler(async (req, res) => {
+    const repo = getCustomRepository(SettingsRepository)
+    const { unit } = req.body
+    if (!unit) {
+      res.status(422).json({ error: 'unit is required.' })
+    }
+    const settings = await repo.update(unit)
+    res.json(settings)
   }),
 )

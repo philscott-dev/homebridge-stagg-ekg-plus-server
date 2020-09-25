@@ -6,9 +6,12 @@ import {
   PrimaryGeneratedColumn,
   ManyToMany,
   JoinTable,
+  AfterLoad,
+  OneToMany,
 } from 'typeorm'
+import { SettingsEntity } from '.'
+import { Status, Unit } from '../../enums'
 import ScheduleEntity from './ScheduleEntity'
-import { Unit } from '../enums'
 
 @Entity('kettle')
 export default class KettleEntity {
@@ -21,19 +24,23 @@ export default class KettleEntity {
   @Column({ type: 'text', nullable: false })
   name!: string
 
-  @Column({ type: 'text', default: Unit.Fahrenheit, nullable: false })
-  unit!: Unit
+  // @ManyToOne((type) => SettingsEntity, (settings) => settings.unit)
+  // unit!: Unit
 
-  @Column({ type: 'integer', default: 205, nullable: false })
-  temperature!: number
-
-  @ManyToMany(() => ScheduleEntity)
-  @JoinTable()
-  schedules?: ScheduleEntity[]
+  @OneToMany((type) => ScheduleEntity, (schedule) => schedule.kettle, {
+    cascade: true,
+  })
+  schedule: ScheduleEntity[]
 
   @CreateDateColumn()
   createdDate!: Date
 
   @UpdateDateColumn()
   updatedDate!: Date
+
+  status!: Status
+  @AfterLoad()
+  async setStatus() {
+    this.status = Status.Disconnected
+  }
 }

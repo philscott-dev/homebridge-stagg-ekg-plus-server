@@ -4,7 +4,11 @@ export enum Unit {
 }
 
 export enum Schedule {
-  Off,
-  Active,
-  Reoccuring,
+  Disabled,
+  Enabled,
+}
+
+export enum Status {
+  Disconnected,
+  Connected,
 }

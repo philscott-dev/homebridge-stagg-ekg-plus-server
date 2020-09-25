@@ -25,11 +25,11 @@ const Error: FC<ErrorProps> = ({ name }) => {
 }
 
 const errorCss = (theme: Theme) => css`
+  position: absolute;
   align-self: flex-end;
   color: ${theme.color.red};
-  margin-left: 24px;
   margin-top: 0;
-  margin-bottom: 8px;
+  top: 8px;
 `
 
 export default Error

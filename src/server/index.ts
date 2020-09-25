@@ -6,6 +6,7 @@ import bodyParser from 'body-parser'
 import { createConnection } from 'typeorm'
 import { router } from './router'
 import typeOrmOptions from './db.config'
+import initialize from './initialize'
 
 const dev = process.env.NODE_ENV !== 'production'
 const app = next({ dev })
@@ -15,6 +16,7 @@ const app = next({ dev })
     const server = express()
     await app.prepare()
     await createConnection(typeOrmOptions)
+    await initialize()
     server.use(bodyParser.json())
     server.use('/api', router)
     server.get('*', (req, res) => {

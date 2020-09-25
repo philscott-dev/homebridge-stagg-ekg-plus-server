@@ -2,6 +2,10 @@ import type { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { FiX } from 'react-icons/fi'
+import { Entries, Rules } from '../components/FormElements/types'
+import useSWR from 'swr'
+import fetcher, { Method } from '../services/api'
+import { getSettings, SettingsResponse } from '../services/settings'
 import {
   H1,
   H2,
@@ -15,15 +19,38 @@ import {
   FormSection,
   FormButton as Button,
 } from '../components'
+import { Unit } from '../enums'
+
+export const rules: Rules = {
+  unit: [
+    {
+      error: 'UNIT IS REQUIRED',
+      fn: (value, ...args) => {
+        return !!value
+      },
+    },
+  ],
+}
 
 const SettingsPage: NextPage = () => {
   const router = useRouter()
+  const { data, error, mutate } = useSWR<SettingsResponse>(
+    [`/settings`],
+    getSettings,
+  )
+
+  console.log(data)
 
   const handleBack = () => {
     router.back()
   }
 
-  const handleSubmit = () => {}
+  const handleSubmit = async ({ unit }: Entries) => {
+    try {
+      await fetcher(Method.PATCH, '/settings', undefined, { unit })
+    } catch (err) {}
+    router.back()
+  }
   return (
     <>
       <Heading>
@@ -47,29 +74,16 @@ const SettingsPage: NextPage = () => {
         onSubmit={handleSubmit}
       >
         <FormSection>
-          <Error name="units" />
+          <Error name="unit" />
           <Select
             placeholder="Units"
-            name="units"
+            name="unit"
             tabIndex={1}
-            defaultValue={'fahrenheit'}
+            defaultValue={data?.unit}
           >
             <SelectPlaceholder text="Units" />
-            <option value={'fahrenheit'}>Fahrenheit</option>
-            <option value={'celsius'}>Celsius</option>
-          </Select>
-        </FormSection>
-        <FormSection>
-          <Error name="time" />
-          <Select
-            placeholder="Time"
-            name="time"
-            tabIndex={2}
-            defaultValue={'12'}
-          >
-            <SelectPlaceholder text="Time" />
-            <option value={'12'}>12 Hour</option>
-            <option value={'24'}>24 Hour</option>
+            <option value={Unit.Fahrenheit}>Fahrenheit</option>
+            <option value={Unit.Celsius}>Celsius</option>
           </Select>
         </FormSection>
         <FormSection>

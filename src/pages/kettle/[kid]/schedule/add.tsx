@@ -60,6 +60,17 @@ const ScheduleAddPage: NextPage = () => {
           <Input type="time" name="off" placeholder={'End Time'} />
         </FormSection>
         <FormSection>
+          <Error name="temperature" />
+          <Input
+            type="number"
+            name="temperature"
+            placeholder={'Temperature'}
+            inputMode="numeric"
+            min="104"
+            max="212"
+          />
+        </FormSection>
+        <FormSection>
           <Button>Confirm</Button>
         </FormSection>
       </Form>

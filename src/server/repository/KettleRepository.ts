@@ -1,4 +1,4 @@
-import { AbstractRepository, EntityRepository } from 'typeorm'
+import { AbstractRepository, DeleteResult, EntityRepository } from 'typeorm'
 import KettleEntity from '../entity/KettleEntity'
 
 @EntityRepository(KettleEntity)
@@ -13,6 +13,7 @@ export default class KettleRepository extends AbstractRepository<KettleEntity> {
     const kettle = new KettleEntity()
     kettle.macAddress = macAddress
     kettle.name = name
+    kettle.schedule = []
     return this.repository.save(kettle)
   }
 
@@ -27,5 +28,14 @@ export default class KettleRepository extends AbstractRepository<KettleEntity> {
   async update(id: string): Promise<KettleEntity | undefined> {
     const kettle = this.repository.findOne(id)
     if (!kettle) return
+  }
+
+  async deleteById(id: string): Promise<DeleteResult> {
+    return this.repository
+      .createQueryBuilder()
+      .delete()
+      .from(KettleEntity)
+      .where('id = :id', { id })
+      .execute()
   }
 }

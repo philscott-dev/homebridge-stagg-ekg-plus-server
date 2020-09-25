@@ -21,21 +21,19 @@ export default async function fetcher(
   query?: { [key: string]: any },
   body?: { [key: string]: any },
 ) {
-  console.log(body)
   try {
     // stringify query and call api
     const params = querystring.stringify(query)
-    const res = await fetch(baseUrl + endpoint + '?' + params, {
-      method,
-      // do this stuff if you need to
-      //body: body ? JSON.stringify(body) : null,
-      //mode: 'cors',
-      //cache: 'default',
-      //credentials: 'same-origin',
-      // headers: {
-      //   'Content-Type': 'application/json',
-      // },
-    })
+    const res = await fetch(
+      `${baseUrl}${endpoint}${params ? '?' + params : ''}`,
+      {
+        method,
+        body: body ? JSON.stringify(body) : null,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      },
+    )
 
     // check for errors
     if (!res.ok) {

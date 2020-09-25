@@ -19,8 +19,9 @@ const Delete = styled(Anchor)`
   font-size: 16px;
   line-height: 12px;
   margin-top: 40px;
+  padding-bottom: 40px;
   &:hover {
-    color: ${({ theme }) => theme.color.red[200]};
+    color: ${({ theme }) => theme.color.peach[100]};
   }
   transition: ${({ theme }) => theme.transition.all};
 `

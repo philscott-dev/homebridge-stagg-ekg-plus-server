@@ -2,6 +2,9 @@ import type { NextPage } from 'next'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { FiX } from 'react-icons/fi'
+import { MAC_ADDRESS_REGEX } from '../../regex'
+import { Entries, Rules } from '../../components/FormElements/types'
+import fetcher, { Method } from '../../services/api'
 import {
   Heading,
   H1,
@@ -15,6 +18,31 @@ import {
   FormButton as Submit,
 } from '../../components'
 
+export const rules: Rules = {
+  name: [
+    {
+      error: 'NAME IS REQUIRED',
+      fn: (value, ...args) => {
+        return !!value
+      },
+    },
+  ],
+  macAddress: [
+    {
+      error: 'MAC ADDRESS IS REQUIRED',
+      fn: (value) => {
+        return !!value
+      },
+    },
+    {
+      error: 'MAC ADDRESS FORMAT - C4:AD:BE:B9:42:FB',
+      fn: (value) => {
+        return MAC_ADDRESS_REGEX.test(value)
+      },
+    },
+  ],
+}
+
 const KettleAddPage: NextPage = () => {
   const router = useRouter()
 
@@ -22,7 +50,12 @@ const KettleAddPage: NextPage = () => {
     router.back()
   }
 
-  const handleSubmit = () => {}
+  const handleSubmit = async ({ name, macAddress }: Entries) => {
+    try {
+      await fetcher(Method.POST, '/kettle', undefined, { name, macAddress })
+    } catch (err) {}
+    router.back()
+  }
 
   return (
     <>
@@ -42,7 +75,7 @@ const KettleAddPage: NextPage = () => {
       <Form
         loading={false}
         error={undefined}
-        rules={{}}
+        rules={rules}
         autoComplete="off"
         onSubmit={handleSubmit}
       >
@@ -56,7 +89,6 @@ const KettleAddPage: NextPage = () => {
         </FormSection>
         <FormSection>
           <Submit>Confirm</Submit>
-          <Anchor.Delete>Delete</Anchor.Delete>
         </FormSection>
       </Form>
     </>

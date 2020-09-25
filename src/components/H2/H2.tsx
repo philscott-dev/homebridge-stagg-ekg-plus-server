@@ -14,7 +14,7 @@ const H2 = styled.h2<H2Props>`
   font-size: 24px;
   line-height: 17px;
   margin-top: 0;
-  margin-bottom: 40px;
+  margin-bottom: 48px;
   font-weight: 600;
   font-family: ${({ theme }) => theme.font.family};
   color: ${({ theme }) => theme.color.gray[300]};

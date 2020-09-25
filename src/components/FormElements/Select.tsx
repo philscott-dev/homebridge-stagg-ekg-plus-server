@@ -16,6 +16,7 @@ interface SelectProps {
 }
 
 export default styled.select<SelectProps>`
+  text-transform: uppercase;
   -webkit-appearance: none;
   height: ${({ inputSize }) =>
     inputSize === 'large' ? INPUT_LARGE : INPUT_SMALL}px;

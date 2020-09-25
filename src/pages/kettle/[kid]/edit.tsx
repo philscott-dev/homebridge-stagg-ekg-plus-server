@@ -1,7 +1,10 @@
 import type { NextPage } from 'next'
 import Link from 'next/link'
+import useSWR from 'swr'
 import { useRouter } from 'next/router'
 import { FiX } from 'react-icons/fi'
+import { getKettle, KettleResponse } from '../../../services/kettle'
+import fetcher, { Method } from '../../../services/api'
 import {
   Heading,
   H1,
@@ -18,12 +21,23 @@ import {
 
 const KettleEditPage: NextPage = () => {
   const router = useRouter()
+  const { data, error, mutate } = useSWR<KettleResponse>(
+    [`/kettle/${router.query.kid}`],
+    getKettle,
+  )
 
   const handleBack = () => {
     router.back()
   }
 
-  const handleSubmit = () => {}
+  const handleSubmit = () => {
+    mutate()
+  }
+
+  const handleDelete = async () => {
+    await fetcher(Method.DELETE, `/kettle/${router.query.kid}`)
+    router.replace('/')
+  }
 
   return (
     <>
@@ -34,7 +48,7 @@ const KettleEditPage: NextPage = () => {
               <H1>EKG+</H1>
             </Anchor>
           </Link>
-          <H2>Edit Phil's Kettle</H2>
+          <H2>Edit {data?.name}</H2>
         </div>
         <IconButton onMouseDown={handleBack}>
           <FiX />
@@ -49,15 +63,27 @@ const KettleEditPage: NextPage = () => {
       >
         <FormSection>
           <Error name="name" />
-          <Input type="text" name="name" placeholder={'Name'} />
+          <Input
+            type="text"
+            name="name"
+            placeholder={'Name'}
+            defaultValue={data?.name}
+          />
         </FormSection>
         <FormSection>
           <Error name="macAddress" />
-          <Input type="text" name="macAddress" placeholder={'Mac Address'} />
+          <Input
+            type="text"
+            name="macAddress"
+            placeholder={'Mac Address'}
+            defaultValue={data?.macAddress}
+          />
         </FormSection>
         <FormSection>
           <Submit>Confirm</Submit>
-          <Anchor.Delete>Delete</Anchor.Delete>
+          <Anchor.Delete onMouseDown={handleDelete}>
+            Delete Kettle
+          </Anchor.Delete>
         </FormSection>
       </Form>
     </>

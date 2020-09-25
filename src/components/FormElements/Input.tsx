@@ -17,6 +17,7 @@ interface InputProps {
 }
 
 export default styled.input<InputProps>`
+text-transform: uppercase;
   -webkit-appearance: none;
   ::-webkit-calendar-picker-indicator {
     display: none;

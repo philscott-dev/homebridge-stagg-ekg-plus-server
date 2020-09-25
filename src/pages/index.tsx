@@ -1,6 +1,8 @@
 import type { NextPage } from 'next'
 import Link from 'next/link'
+import useSWR from 'swr'
 import { FiSettings } from 'react-icons/fi'
+import { KettleResponse, listKettles } from '../services/kettle'
 import {
   H1,
   H2,
@@ -10,8 +12,11 @@ import {
   IconButton,
   Anchor,
 } from '../components'
+import { Status } from 'enums'
 
 const IndexPage: NextPage = () => {
+  const { data, error } = useSWR<KettleResponse[]>(['/kettle'], listKettles)
+  console.log(data)
   return (
     <>
       <Heading>
@@ -30,9 +35,26 @@ const IndexPage: NextPage = () => {
         </Link>
       </Heading>
       <H6>Kettle</H6>
-      <Link href={'/kettle/[kid]'} as={'/kettle/1'} passHref>
-        <ListItem title="Phil's Kettle" subtitle="connected" />
-      </Link>
+      {!error && data
+        ? data.map((kettle) => (
+            <Link
+              key={kettle.id}
+              href={'/kettle/[kid]'}
+              as={`/kettle/${kettle.id}`}
+              passHref
+            >
+              <ListItem
+                title={kettle.name}
+                subtitle={
+                  kettle.status === Status.Connected
+                    ? 'connected'
+                    : 'disconnected'
+                }
+              />
+            </Link>
+          ))
+        : null}
+
       <Link href="/kettle/add" passHref>
         <ListItem isEmpty={true} title="new kettle" subtitle="tap to add" />
       </Link>

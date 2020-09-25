@@ -1,32 +1,11 @@
-import {
-  Entity,
-  Column,
-  CreateDateColumn,
-  UpdateDateColumn,
-  PrimaryGeneratedColumn,
-} from 'typeorm'
-import { Schedule } from '../enums'
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm'
+import { Unit } from '../../enums'
 
-@Entity('schedule')
+@Entity('settings')
 export default class SettingsEntity {
   @PrimaryGeneratedColumn()
   id!: number
 
-  @Column({ type: 'text', nullable: false })
-  name!: string
-
-  @Column({ type: 'boolean', default: Schedule.Off, nullable: false })
-  status!: Schedule
-
-  @Column({ type: 'text', nullable: true })
-  timeOn?: Date
-
-  @Column({ type: 'text', nullable: true })
-  timeOff?: Date
-
-  @CreateDateColumn()
-  createdDate!: Date
-
-  @UpdateDateColumn()
-  updatedDate!: Date
+  @Column({ type: 'text', default: Unit.Fahrenheit, nullable: false })
+  unit!: Unit
 }
