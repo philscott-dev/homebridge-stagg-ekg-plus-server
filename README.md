@@ -1,9 +1,10 @@
 # homebridge-stagg-ekg-plus
 Server & Homebridge plugin for the Stagg EKG+ electric kettle
 
-## Setup Node on Pi 4
+## Setup
 curl -sL https://deb.nodesource.com/setup_12.x | sudo bash -
 sudo apt install nodejs
+sudo apt-get install bluetooth bluez libbluetooth-dev libudev-dev
 
 ## pm2
 sudo npm install -g pm2

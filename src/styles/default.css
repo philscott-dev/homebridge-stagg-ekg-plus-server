@@ -1,0 +1,8 @@
+body {
+  margin: 0;
+  background: #020202;
+}
+
+#__next-prerender-indicator {
+  display: none !important;
+}

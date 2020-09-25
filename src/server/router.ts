@@ -61,7 +61,7 @@ router.get(
 router.patch(
   '/kettle/:id',
   asyncHandler(async (req, res) => {
-    //const repo = getCustomRepository(KettleRepository)
+    //const repo = getRep(KettleRepository)
     //const kettle = repo.repo
     res.json({})
   }),
