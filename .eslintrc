@@ -1,63 +1,20 @@
 {
+  "root": true,
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "ecmaVersion": 11,
+    "ecmaVersion": 2018,
     "sourceType": "module"
   },
+  "plugins": ["@typescript-eslint"],
   "extends": [
-    "react-app",
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "prettier",
     "prettier/@typescript-eslint",
     "plugin:prettier/recommended"
   ],
   "rules": {
-    "eqeqeq": 0,
-    "@typescript-eslint/no-unused-vars": 0,
-    "@typescript-eslint/consistent-type-assertions": 0,
-    "react/react-in-jsx-scope": 0,
-    "react/proptypes": 0,
-    "react/jsx-filename-extension": [
-      1,
-      {
-        "extensions": [".js", ".jsx", ".ts", ".tsx"]
-      }
-    ],
-    // allow Next.js nested empty <a> tags in <Link>
-    "jsx-a11y/anchor-is-valid": [
-      "error",
-      {
-        "components": ["Link"],
-        "specialLink": ["hrefLeft", "hrefRight"],
-        "aspects": ["invalidHref", "preferButton"]
-      }
-    ],
-    "semi": [2, "never"]
-  },
-  "settings": {
-    "import/resolver": {
-      "node": {
-        "extensions": [".js", ".jsx", ".ts", ".tsx"]
-      }
-    }
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": ["error"]
   }
 }
-
-// {
-//   "root": true,
-//   "parser": "@typescript-eslint/parser",
-//   "parserOptions": {
-//     "ecmaVersion": 2018,
-//     "sourceType": "module"
-//   },
-//   "plugins": ["@typescript-eslint"],
-//   "extends": [
-//     "eslint:recommended",
-//     "plugin:@typescript-eslint/eslint-recommended",
-//     "prettier",
-//     "prettier/@typescript-eslint",
-//     "plugin:prettier/recommended"
-//   ],
-//   "rules": {
-//     "no-unused-vars": "off",
-//     "@typescript-eslint/no-unused-vars": ["error"]
-//   }
-// }
