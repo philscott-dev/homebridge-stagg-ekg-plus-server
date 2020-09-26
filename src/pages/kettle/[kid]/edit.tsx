@@ -15,14 +15,14 @@ import {
   Input,
   Error,
   FormSection,
-  Button,
   FormButton as Submit,
 } from '../../../components'
 
 const KettleEditPage: NextPage = () => {
   const router = useRouter()
+  const { kid } = router.query
   const { data, error, mutate } = useSWR<KettleResponse>(
-    [`/kettle/${router.query.kid}`],
+    kid ? `/kettle/${kid}` : null,
     getKettle,
   )
 
@@ -31,11 +31,15 @@ const KettleEditPage: NextPage = () => {
   }
 
   const handleSubmit = () => {
-    mutate()
+    router.push('/kettle/[kid]', `/kettle/${kid}`)
   }
 
   const handleDelete = async () => {
-    await fetcher(Method.DELETE, `/kettle/${router.query.kid}`)
+    try {
+      await fetcher(Method.DELETE, `/kettle/${kid}`)
+    } catch (err) {
+      console.log(err)
+    }
     router.replace('/')
   }
 

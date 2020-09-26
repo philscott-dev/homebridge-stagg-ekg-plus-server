@@ -3,14 +3,13 @@ import Link from 'next/link'
 import useSWR from 'swr'
 import { useRouter } from 'next/router'
 import { FiEdit } from 'react-icons/fi'
-import { fetchKettle } from '../../../../../services/kettle'
+import { ScheduleResponse, getSchedule } from '../../../../../services/schedule'
 import {
   Heading,
   H1,
   H2,
   H6,
   Text,
-  ListItem,
   Attribute,
   IconButton,
   Anchor,
@@ -18,6 +17,12 @@ import {
 
 const IndexPage: NextPage = () => {
   const router = useRouter()
+  const { kid, sid } = router.query
+  const { data, error } = useSWR<ScheduleResponse>(
+    sid ? `/schedule/${sid}` : null,
+    getSchedule,
+  )
+
   return (
     <>
       <Heading>
@@ -27,11 +32,12 @@ const IndexPage: NextPage = () => {
               <H1>EKG+</H1>
             </Anchor>
           </Link>
-          <H2>Wake Up</H2>
+          <H2>{data?.name}</H2>
         </div>
         <Link
           href={'/kettle/[kid]/schedule/[sid]/edit'}
-          as={'/kettle/1/schedule/1/edit'}
+          as={`/kettle/${kid}/schedule/${sid}/edit`}
+          passHref
         >
           <IconButton>
             <FiEdit />
@@ -40,11 +46,13 @@ const IndexPage: NextPage = () => {
       </Heading>
       <Attribute>
         <H6>status</H6>
-        <Text>enabled</Text>
+        <Text>{data?.isEnabled ? 'enabled' : 'disabled'}</Text>
       </Attribute>
       <Attribute>
         <H6>time</H6>
-        <Text>08:24 AM - 12:53 PM</Text>
+        <Text>
+          {data?.timeOn} - {data?.timeOff}
+        </Text>
       </Attribute>
     </>
   )

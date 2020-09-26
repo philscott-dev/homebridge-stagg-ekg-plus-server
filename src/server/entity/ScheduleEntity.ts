@@ -7,7 +7,6 @@ import {
   ManyToOne,
 } from 'typeorm'
 import { KettleEntity } from '.'
-import { Schedule } from '../../enums'
 
 @Entity('schedule')
 export default class ScheduleEntity {
@@ -17,19 +16,21 @@ export default class ScheduleEntity {
   @Column({ type: 'text', nullable: false })
   name!: string
 
-  @Column({ type: 'boolean', default: Schedule.Disabled, nullable: false })
-  status!: Schedule
+  @Column({ type: 'boolean', default: true, nullable: false })
+  isEnabled!: boolean
 
   @Column({ type: 'integer', nullable: false })
   temperature!: number
 
-  @Column({ type: 'text', nullable: true })
-  timeOn?: Date
+  @Column({ type: 'text', nullable: false })
+  timeOn!: string
 
-  @Column({ type: 'text', nullable: true })
-  timeOff?: Date
+  @Column({ type: 'text', nullable: false })
+  timeOff!: string
 
-  @ManyToOne((type) => KettleEntity, (kettle) => kettle.schedule)
+  @ManyToOne((type) => KettleEntity, (kettle) => kettle.schedule, {
+    cascade: true,
+  })
   kettle: KettleEntity
 
   @CreateDateColumn()

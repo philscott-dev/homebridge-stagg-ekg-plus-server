@@ -2,6 +2,8 @@ import type { NextPage } from 'next'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { FiX } from 'react-icons/fi'
+import { Entries } from '../../../../components/FormElements/types'
+import fetcher, { Method } from '../../../../services/api'
 import {
   Heading,
   H1,
@@ -17,13 +19,32 @@ import {
 
 const ScheduleAddPage: NextPage = () => {
   const router = useRouter()
-  //const { data } = useSWR(['/kettle', router.query.sid], fetchKettle)
+  const { kid } = router.query
 
   const handleBack = () => {
     router.back()
   }
 
-  const handleSubmit = () => {}
+  const handleSubmit = async ({
+    name,
+    timeOn,
+    timeOff,
+    days,
+    temperature,
+  }: Entries) => {
+    try {
+      await fetcher(Method.POST, `/kettle/${kid}/schedule`, null, {
+        name,
+        timeOff,
+        timeOn,
+        temperature,
+        days,
+      })
+    } catch (err) {
+      console.log(err)
+    }
+    router.push('/kettle/[kid]', `/kettle/${kid}`)
+  }
 
   return (
     <>
@@ -52,12 +73,12 @@ const ScheduleAddPage: NextPage = () => {
           <Input type="text" name="name" placeholder={'Name'} />
         </FormSection>
         <FormSection>
-          <Error name="on" />
-          <Input type="time" name="on" placeholder={'Start Time'} />
+          <Error name="timeOn" />
+          <Input type="time" name="timeOn" placeholder={'Start Time'} />
         </FormSection>
         <FormSection>
-          <Error name="off" />
-          <Input type="time" name="off" placeholder={'End Time'} />
+          <Error name="timeOff" />
+          <Input type="time" name="timeOff" placeholder={'End Time'} />
         </FormSection>
         <FormSection>
           <Error name="temperature" />

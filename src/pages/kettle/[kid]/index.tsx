@@ -15,12 +15,12 @@ import {
   Anchor,
   IconButton,
 } from '../../../components'
-import { Status } from '../../../enums'
 
 const IndexPage: NextPage = () => {
   const router = useRouter()
+  const { kid } = router.query
   const { data, error } = useSWR<KettleResponse>(
-    [`/kettle/${router.query.kid}`],
+    kid ? `/kettle/${kid}` : null,
     getKettle,
   )
 
@@ -35,7 +35,7 @@ const IndexPage: NextPage = () => {
           </Link>
           <H2>{data?.name}</H2>
         </div>
-        <Link href={'[kid]/edit'} as={`${data?.id}/edit`} passHref>
+        <Link href={'/kettle/[kid]/edit'} as={`/kettle/${kid}/edit`} passHref>
           <IconButton>
             <FiEdit />
           </IconButton>
@@ -43,25 +43,31 @@ const IndexPage: NextPage = () => {
       </Heading>
       <Attribute>
         <H6>status</H6>
-        <Text>
-          {data?.status === Status.Connected ? 'connected' : 'disconnected'}
-        </Text>
+        <Text>{data?.isConnected ? 'connected' : 'disconnected'}</Text>
       </Attribute>
       <Attribute>
         <H6>mac address</H6>
         <Text>{data?.macAddress}</Text>
       </Attribute>
       <H6>schedule</H6>
+      {!error && data
+        ? data.schedule?.map((schedule) => (
+            <Link
+              key={schedule.id}
+              href={'/kettle/[kid]/schedule/[sid]'}
+              as={`/kettle/${kid}/schedule/${schedule.id}`}
+              passHref
+            >
+              <ListItem
+                title={schedule.name}
+                subtitle={`${schedule.timeOn} - ${schedule.timeOff}`}
+              />
+            </Link>
+          ))
+        : null}
       <Link
-        href={'[kid]/schedule/[sid]'}
-        as={`${data?.id}/schedule/1`}
-        passHref
-      >
-        <ListItem title={'WAKE UP'} subtitle={'08:24 AM - 12:53 PM'} />
-      </Link>
-      <Link
-        href={'[kid]/schedule/add'}
-        as={`${data?.id}/schedule/add`}
+        href={'/kettle/[kid]/schedule/add'}
+        as={`/kettle/${kid}/schedule/add`}
         passHref
       >
         <ListItem isEmpty title={'New Schedule'} subtitle={'Tap to add'} />

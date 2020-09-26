@@ -1,7 +1,10 @@
 import type { NextPage } from 'next'
 import Link from 'next/link'
+import useSWR from 'swr'
 import { useRouter } from 'next/router'
 import { FiX } from 'react-icons/fi'
+import fetcher, { Method } from '../../../../../services/api'
+import { ScheduleResponse, getSchedule } from '../../../../../services/schedule'
 import {
   Heading,
   H1,
@@ -12,18 +15,36 @@ import {
   Input,
   Error,
   FormSection,
-  Button,
   FormButton as Submit,
 } from '../../../../../components'
 
 const ScheduleEditPage: NextPage = () => {
   const router = useRouter()
+  const { kid, sid } = router.query
+  const { data, error } = useSWR<ScheduleResponse>(
+    sid ? `/schedule/${sid}` : null,
+    getSchedule,
+  )
 
   const handleBack = () => {
     router.back()
   }
 
-  const handleSubmit = () => {}
+  const handleSubmit = () => {
+    router.push(
+      '/kettle/[kid]/schedule/[sid]',
+      `/kettle/${kid}/schedule/${sid}`,
+    )
+  }
+
+  const handleDelete = async () => {
+    try {
+      await fetcher(Method.DELETE, `/schedule/${sid}`)
+    } catch (err) {
+      console.log(err)
+    }
+    router.replace('/kettle/[kid]', `/kettle/${kid}`)
+  }
 
   return (
     <>
@@ -49,15 +70,30 @@ const ScheduleEditPage: NextPage = () => {
       >
         <FormSection>
           <Error name="name" />
-          <Input type="text" name="name" placeholder={'Name'} />
+          <Input
+            type="text"
+            name="name"
+            placeholder={'Name'}
+            defaultValue={data?.name}
+          />
         </FormSection>
         <FormSection>
-          <Error name="on" />
-          <Input type="time" name="on" placeholder={'On'} />
+          <Error name="timeOn" />
+          <Input
+            type="time"
+            name="timeOn"
+            placeholder={'On'}
+            defaultValue={data?.timeOn}
+          />
         </FormSection>
         <FormSection>
-          <Error name="off" />
-          <Input type="time" name="off" placeholder={'Off'} />
+          <Error name="timeOff" />
+          <Input
+            type="time"
+            name="timeOff"
+            placeholder={'Off'}
+            defaultValue={data?.timeOff}
+          />
         </FormSection>
         <FormSection>
           <Error name="temperature" />
@@ -68,11 +104,14 @@ const ScheduleEditPage: NextPage = () => {
             inputMode="numeric"
             min="104"
             max="212"
+            defaultValue={data?.temperature}
           />
         </FormSection>
         <FormSection>
           <Submit>Confirm</Submit>
-          <Anchor.Delete>Delete Schedule</Anchor.Delete>
+          <Anchor.Delete onMouseDown={handleDelete}>
+            Delete Schedule
+          </Anchor.Delete>
         </FormSection>
       </Form>
     </>

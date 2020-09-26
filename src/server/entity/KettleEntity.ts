@@ -10,7 +10,6 @@ import {
   OneToMany,
 } from 'typeorm'
 import { SettingsEntity } from '.'
-import { Status, Unit } from '../../enums'
 import ScheduleEntity from './ScheduleEntity'
 
 @Entity('kettle')
@@ -24,12 +23,7 @@ export default class KettleEntity {
   @Column({ type: 'text', nullable: false })
   name!: string
 
-  // @ManyToOne((type) => SettingsEntity, (settings) => settings.unit)
-  // unit!: Unit
-
-  @OneToMany((type) => ScheduleEntity, (schedule) => schedule.kettle, {
-    cascade: true,
-  })
+  @OneToMany((type) => ScheduleEntity, (schedule) => schedule.kettle)
   schedule: ScheduleEntity[]
 
   @CreateDateColumn()
@@ -38,9 +32,9 @@ export default class KettleEntity {
   @UpdateDateColumn()
   updatedDate!: Date
 
-  status!: Status
+  isConnected!: boolean
   @AfterLoad()
   async setStatus() {
-    this.status = Status.Disconnected
+    this.isConnected = false
   }
 }

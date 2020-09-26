@@ -12,11 +12,9 @@ import {
   IconButton,
   Anchor,
 } from '../components'
-import { Status } from 'enums'
 
 const IndexPage: NextPage = () => {
   const { data, error } = useSWR<KettleResponse[]>(['/kettle'], listKettles)
-  console.log(data)
   return (
     <>
       <Heading>
@@ -45,11 +43,7 @@ const IndexPage: NextPage = () => {
             >
               <ListItem
                 title={kettle.name}
-                subtitle={
-                  kettle.status === Status.Connected
-                    ? 'connected'
-                    : 'disconnected'
-                }
+                subtitle={kettle.isConnected ? 'connected' : 'disconnected'}
               />
             </Link>
           ))

@@ -1,4 +1,11 @@
-import { AbstractRepository, DeleteResult, EntityRepository } from 'typeorm'
+import { ScheduleEntity } from 'server/entity'
+import {
+  AbstractRepository,
+  DeleteResult,
+  EntityRepository,
+  getCustomRepository,
+} from 'typeorm'
+import { ScheduleRepository } from '.'
 import KettleEntity from '../entity/KettleEntity'
 
 @EntityRepository(KettleEntity)
@@ -18,15 +25,15 @@ export default class KettleRepository extends AbstractRepository<KettleEntity> {
   }
 
   async find(): Promise<KettleEntity[]> {
-    return this.repository.find()
+    return this.repository.find({ relations: ['schedule'] })
   }
 
   async findById(id: string): Promise<KettleEntity | undefined> {
-    return this.repository.findOne(id)
+    return this.repository.findOne(id, { relations: ['schedule'] })
   }
 
   async update(id: string): Promise<KettleEntity | undefined> {
-    const kettle = this.repository.findOne(id)
+    const kettle = await this.findById(id)
     if (!kettle) return
   }
 
@@ -37,5 +44,16 @@ export default class KettleRepository extends AbstractRepository<KettleEntity> {
       .from(KettleEntity)
       .where('id = :id', { id })
       .execute()
+  }
+
+  async addSchedule(
+    id: string,
+    schedule: ScheduleEntity,
+  ): Promise<KettleEntity | undefined> {
+    const kettle = await this.findById(id)
+    if (kettle) {
+      kettle.schedule.push(schedule)
+      return this.repository.save(kettle)
+    }
   }
 }

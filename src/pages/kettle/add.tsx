@@ -54,7 +54,7 @@ const KettleAddPage: NextPage = () => {
     try {
       await fetcher(Method.POST, '/kettle', undefined, { name, macAddress })
     } catch (err) {}
-    router.back()
+    router.push('/')
   }
 
   return (

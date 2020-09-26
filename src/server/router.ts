@@ -1,6 +1,10 @@
 import { Router } from 'express'
 import { getCustomRepository } from 'typeorm'
-import { KettleRepository, SettingsRepository } from './repository'
+import {
+  KettleRepository,
+  ScheduleRepository,
+  SettingsRepository,
+} from './repository'
 import { asyncHandler } from './utils/asyncHandler'
 export const router = Router()
 
@@ -85,31 +89,50 @@ router.delete(
 router.post(
   '/kettle/:id/schedule',
   asyncHandler(async (req, res) => {
-    res.json({})
+    const { id } = req.params
+    const { name, timeOn, timeOff, days, temperature } = req.body
+    const scheduleRepo = getCustomRepository(ScheduleRepository)
+    const kettleRepo = getCustomRepository(KettleRepository)
+    const schedule = await scheduleRepo.create({
+      name,
+      timeOff,
+      timeOn,
+      days,
+      temperature,
+    })
+    const kettle = await kettleRepo.addSchedule(id, schedule)
+    res.json(kettle)
   }),
 )
 
 /**
  * Update Schedule Item
  */
+
 router.get(
-  '/kettle/:id/schedule/:id',
+  '/schedule/:id',
   asyncHandler(async (req, res) => {
-    res.json({})
+    const { id } = req.params
+    const repo = getCustomRepository(ScheduleRepository)
+    const kettle = await repo.findById(id)
+    res.json(kettle)
   }),
 )
 
 router.patch(
-  '/kettle/:id/schedule/:id',
+  '/schedule/:id',
   asyncHandler(async (req, res) => {
     res.json({})
   }),
 )
 
 router.delete(
-  '/kettle/:id/schedule/:id',
+  '/schedule/:id',
   asyncHandler(async (req, res) => {
-    res.json({})
+    const { id } = req.params
+    const repo = getCustomRepository(ScheduleRepository)
+    const result = await repo.deleteById(id)
+    res.json(result)
   }),
 )
 
