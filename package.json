@@ -11,6 +11,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
+    "@abandonware/bluetooth-hci-socket": "^0.5.3-5",
     "@abandonware/noble": "^1.9.2-10",
     "body-parser": "^1.19.0",
     "bunyan": "^1.8.14",

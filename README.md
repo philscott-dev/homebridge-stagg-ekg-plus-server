@@ -39,7 +39,7 @@ Interactive:    gatttool -I
 Connect:        connect 00:1C:97:19:54:A2
 Subscribe:      char-write-req 0x000e 0100
 Unsubscribe:    char-write-req 0x000e 0000
-Authenticate:   char-write-cmd 0x000d efdd0b3031323334353637383930313
+Authenticate:   char-write-cmd 0x000d efdd0b3031323334353637383930313233349a6d
 Power On:       char-write-cmd 0x000d efdd0a0000010100
 Power Off:      char-write-cmd 0x000d efdd0a0400000400
 
