@@ -6,9 +6,18 @@ curl -sL https://deb.nodesource.com/setup_12.x | sudo bash -
 sudo apt install nodejs
 sudo apt-get install bluetooth bluez libbluetooth-dev libudev-dev
 
+Troubleshooting Bluetooth
+sudo apt-get install bluez-hcidump
+sudo hcidump -t -x
+
+Upgrade Raspberry Pi
+sudo apt update
+sudo apt dist-upgrade -y
+sudo reboot
+
 ## pm2
 sudo npm install -g pm2
-sudo pm2 startup
+sudo pm2 startup systemd
 pm2 start serverfile
 pm2 save
 
@@ -98,76 +107,38 @@ Off: efdd0a0400000400
 
 
 
-Received: "00000000"
-Received: "efdd05"
-Received: "ffffffff"
-Received: "efdd03"
-Received: "20012001"
-Received: "efdd02"
-Received: "cd01cd01"
-Received: "efdd00"
-Received: "000000"
-Received: "efdd01"
-Received: "010100"
-Received: "efdd06"
-Received: "000000"
-Received: "efdd07"
-Received: "000000"
-Received: "efdd08"
-Received: "010100"
-Received: "efdd04"
-Received: "00000000"
-Received: "efdd05"
-Received: "ffffffff"
-Received: "efdd03"
-Received: "20012001"
-Received: "efdd02"
-Received: "cd01cd01"
-Received: "efdd00"
-Received: "000000"
-Received: "efdd01"
-Received: "010100"
-Received: "efdd06"
-Received: "000000"
-Received: "efdd07"
-Received: "000000"
-Received: "efdd08"
-Received: "010100"
-Received: "efdd04"
-Received: "00000000"
-Received: "efdd05"
-Received: "ffffffff"
-Received: "efdd03"
-Received: "20012001"
-Received: "efdd02"
-Received: "cd01cd01"
-Received: "efdd00"
-Received: "000000"
-Received: "efdd01"
-Received: "010100"
-Received: "efdd06"
-Received: "000000"
-Received: "efdd07"
-Received: "000000"
-Received: "efdd08"
-Received: "010100"
-Received: "efdd04"
-Received: "00000000"
-Received: "efdd05"
-Received: "ffffffff"
-Received: "efdd03"
-Received: "20012001"
-Received: "efdd02"
-Received: "cd01cd01"
-Received: "efdd00"
-Received: "000000"
-Received: "efdd01"
-Received: "010100"
-Received: "efdd06"
-Received: "000000"
-Received: "efdd07"
-Received: "000000"
-Received: "efdd08"
-Received: "010100"
-Received: "efdd04"
-Received: "00000000"
+0|EKG Server  | Received: "ffffffff"
+0|EKG Server  | Received: "cc01cc01"
+0|EKG Server  | Received: "cd01cd01"
+0|EKG Server  | Received: "010100"
+0|EKG Server  | Received: "010100"
+0|EKG Server  | Received: "010100"
+0|EKG Server  | Received: "000000"
+0|EKG Server  | Received: "010100"
+0|EKG Server  | Received: "ed0ded0d"
+0|EKG Server  | Received: "ffffffff"
+
+0|EKG Server  | Received: "ffffffff"
+0|EKG Server  | Received: "efdd03"
+0|EKG Server  | Received: "cc01cc01"
+0|EKG Server  | Received: "efdd02"
+0|EKG Server  | Received: "cd01cd01"
+0|EKG Server  | Received: "efdd00"
+0|EKG Server  | Received: "010100"
+0|EKG Server  | Received: "efdd01"
+0|EKG Server  | Received: "010100"
+0|EKG Server  | Received: "efdd06"
+0|EKG Server  | Received: "010100"
+0|EKG Server  | Received: "efdd07"
+0|EKG Server  | Received: "000000"
+0|EKG Server  | Received: "efdd08"
+0|EKG Server  | Received: "010100"
+0|EKG Server  | Received: "efdd04"
+0|EKG Server  | Received: "ed0ded0d"
+0|EKG Server  | Received: "efdd05"
+0|EKG Server  | Received: "ffffffff"
+
+
+
+
+0|EKG Server  | Received: "0964020200560100000cbc"
