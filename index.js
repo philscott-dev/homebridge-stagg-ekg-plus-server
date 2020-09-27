@@ -82,6 +82,18 @@ const OFF = Buffer.from('efdd0a0400000400', 'hex')
     })
 
     app.get('/api/status', wakeupScanner, sendStatus)
+    app.post(
+      '/api/power',
+      wakeupScanner,
+      asyncHandler(async (req, res, next) => {
+        const { targetState } = req.body
+        console.log(targetState)
+        //await kettleCharacterist.writeAsync(ON, true)
+        //isPoweredOn = true
+        next()
+      }),
+      sendStatus,
+    )
     app.get(
       '/api/power/on',
       wakeupScanner,
