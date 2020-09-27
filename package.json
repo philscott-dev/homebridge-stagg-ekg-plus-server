@@ -1,5 +1,5 @@
 {
-  "name": "homebridge-stagg-ekg-plus",
+  "name": "homebridge-stagg-ekg-plus-server",
   "version": "1.0.0",
   "description": "Homebridge plugin for the Stagg EKG+ electric kettle",
   "main": "index.js",
@@ -24,7 +24,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/philscott-dev/homebridge-stagg-ekg-plus.git"
+    "url": "git+https://github.com/philscott-dev/homebridge-stagg-ekg-plus-server.git"
   },
   "keywords": [
     "homebridge",
@@ -34,7 +34,7 @@
   "author": "Phil Scott",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/philscott-dev/homebridge-stagg-ekg-plus/issues"
+    "url": "https://github.com/philscott-dev/homebridge-stagg-ekg-plus-server/issues"
   },
-  "homepage": "https://github.com/philscott-dev/homebridge-stagg-ekg-plus#readme"
+  "homepage": "https://github.com/philscott-dev/homebridge-stagg-ekg-plus-server#readme"
 }
