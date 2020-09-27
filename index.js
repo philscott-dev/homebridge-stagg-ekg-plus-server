@@ -1,15 +1,25 @@
-import express, { NextFunction, Response, Request } from 'express'
-import noble, { Characteristic, Peripheral } from '@abandonware/noble'
-import { asyncHandler } from './middleware'
-import { AUTHENTICATE, ON, OFF } from './commands'
+const express = require('express')
+const bodyParser = require('body-parser')
+const noble = require('@abandonware/noble')
 
 const MAC = '00:1C:97:19:54:A2'.toLowerCase()
-let initializeConnection: () => Promise<void>
-let kettlePeripheral: Peripheral
-let kettleCharacterist: Characteristic
+let initializeConnection
+let kettlePeripheral
+let kettleCharacterist
 let isConnected = false
 let isScanning = false
 let isPoweredOn = false
+
+const asyncHandler = (fn) => (req, res, next) =>
+  Promise.resolve(fn(req, res, next)).catch(next)
+
+const AUTHENTICATE = Buffer.from(
+  'efdd0b3031323334353637383930313233349a6d',
+  'hex',
+)
+const ON = Buffer.from('efdd0a0000010100', 'hex')
+
+const OFF = Buffer.from('efdd0a0400000400', 'hex')
 
 ;(async () => {
   try {
@@ -32,6 +42,7 @@ let isPoweredOn = false
         kettlePeripheral.on('disconnect', () => {
           console.log('Kettle: Disonnected')
           isConnected = false
+          isPoweredOn = false
         })
 
         initializeConnection = async () => {
@@ -57,15 +68,14 @@ let isPoweredOn = false
     })
 
     const app = express()
+    app.use(bodyParser.json())
 
-    const wakeupScanner = asyncHandler(
-      async (req: Request, res: Response, next: NextFunction) => {
-        if (!isConnected) {
-          await initializeConnection()
-        }
-        return next()
-      },
-    )
+    const wakeupScanner = asyncHandler(async (req, res, next) => {
+      if (!isConnected) {
+        await initializeConnection()
+      }
+      return next()
+    })
 
     const sendStatus = asyncHandler(async (_, res) => {
       res.json({ isConnected, isScanning, isPoweredOn })
