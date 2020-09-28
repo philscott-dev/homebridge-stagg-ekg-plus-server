@@ -1,5 +1,5 @@
 # homebridge-stagg-ekg-plus-server
-Fellow Stagg EKG+ Server Application for ```homebridge-stagg-ekg-plus plugin```
+Fellow Stagg EKG+ Server Application for [homebridge-stagg-ekg-plus plugin](https://www.npmjs.com/package/homebridge-stagg-ekg-plus)
 
 ## Basic Setup
 Clone this repo to your Raspberry Pi then:
