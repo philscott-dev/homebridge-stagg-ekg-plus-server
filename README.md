@@ -1,8 +1,7 @@
 # homebridge-stagg-ekg-plus-server
-Fellow Stagg EKG+ Server Application for [homebridge-stagg-ekg-plus plugin](https://www.npmjs.com/package/homebridge-stagg-ekg-plus)
+Stagg EKG+ Server for [homebridge-stagg-ekg-plus](https://www.npmjs.com/package/homebridge-stagg-ekg-plus)
 
 ## Basic Setup
-Clone this repo to your Raspberry Pi then:
 ```
 git clone https://github.com/philscott-dev/homebridge-stagg-ekg-plus-server.git
 cd homebridge-stagg-ekg-plus-server
@@ -12,15 +11,14 @@ touch .env
 
 Config for `.env`:
 ```
+# Kettle Mac Address
 MAC_ADDRESS=00:11:22:33:44:55
+
+# Server Port
 PORT=8080
 ```
 
-**MAC_ADDRESS**: Bluetooth Mac Address for your kettle. <br />
-**PORT**: Port you'd like your server to be hosted on.
-
-
-## Install Node 
+## Install Node
 ```
 curl -sL https://deb.nodesource.com/setup_12.x | sudo bash -
 sudo apt install nodejs
