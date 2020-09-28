@@ -123,7 +123,6 @@ const numberToHex = (n) => {
           parseInt(targetState, 10) === PowerState.On
             ? Command.PowerOn()
             : Command.PowerOff()
-        console.log(buffer)
         await kettleCharacterist.writeAsync(buffer, true)
         powerState = targetState
         next()
