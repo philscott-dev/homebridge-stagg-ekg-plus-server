@@ -6,6 +6,11 @@ const noble = require('@abandonware/noble')
 const PORT = process.env.PORT || 8080
 const MAC = process.env.MAC_ADDRESS || ''
 
+const PowerState = {
+  Off: 0,
+  On: 1,
+}
+
 let initializeConnection
 let kettlePeripheral
 let kettleCharacterist
@@ -29,11 +34,6 @@ const Command = {
     const string = `efdd0a${s}01${t}${numberToHex(w)}01`
     return Buffer.from(string, 'hex')
   },
-}
-
-const PowerState = {
-  Off: 0,
-  On: 1,
 }
 
 const asyncHandler = (fn) => (req, res, next) =>
