@@ -1,34 +1,58 @@
 # homebridge-stagg-ekg-plus-server
-Fellow Stagg EKG+ server (pi 4) for homebridge-stagg-ekg-plus plugin
+Fellow Stagg EKG+ Server Application for ```homebridge-stagg-ekg-plus plugin```
 
-## Setup Node
+## Basic Setup
+Clone this repo to your Raspberry Pi then:
+```
+git clone https://github.com/philscott-dev/homebridge-stagg-ekg-plus-server.git
+cd homebridge-stagg-ekg-plus-server
+npm install
+touch .env
+```
+
+Config for `.env`:
+```
+MAC_ADDRESS=00:11:22:33:44:55
+PORT=8080
+```
+
+MAC_ADDRESS: Bluetooth Mac Address for your kettle.
+PORT: Port you'd like your server to be hosted on.
+
+
+## Install Node 
 ```
 curl -sL https://deb.nodesource.com/setup_12.x | sudo bash -
 sudo apt install nodejs
-sudo apt-get install bluetooth bluez libbluetooth-dev libudev-dev
+```
+
+## Install Bluetooth
+```
+sudo apt-get install bluetooth bluez libbluetooth-dev libudev-dev bluez-hcidump
+bluetoothctl power on
 ```
 
 ## Configure PM2
 ```
 sudo npm install -g pm2
 sudo pm2 startup systemd
-pm2 start serverfile
+pm2 start index.js --name "homebridge-stagg-ekg-plus-server"
 pm2 save
 ```
 
 ## Configure Wifi
-Turn Off Power Save
+Turn Off Power Save:
 ```
 /sbin/iw wlan0 get power_save
 sudo nano /etc/rc.local
 ```
 
-add BEFORE exit 0 
+add BEFORE exit 0:
 ```
 sudo /sbin/iw wlan0 set power_save off 
 ```
 
-Configure Netowrk
+Configure Network Connection:
 ```
 sudo nano /etc/wpa_supplicant/wpa_supplicant.conf
 network={
@@ -37,19 +61,13 @@ network={
 }
 ```
 
-## Bluetooth
-```
-bluetoothctl power on
-```
-
 ## Troubleshooting
-Troubleshooting Bluetooth
+Troubleshooting Bluetooth:
 ```
-sudo apt-get install bluez-hcidump
 sudo hcidump -t -x
 ```
 
-Upgrade Raspberry Pi
+Upgrade Raspberry Pi:
 ```
 sudo apt update
 sudo apt dist-upgrade -y
