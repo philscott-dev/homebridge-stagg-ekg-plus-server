@@ -1,7 +1,2 @@
-.next
-**/*.d.ts
-*.test.{js,ts,jsx,tsx}
 dist
-static
-public
 node_modules

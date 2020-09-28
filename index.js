@@ -3,25 +3,38 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const noble = require('@abandonware/noble')
 
-const PowerState = {
-  Off: 0,
-  On: 1,
-}
-
-const Command = {
-  PowerOn: Buffer.from('efdd0a0000010100', 'hex'),
-  PowerOff: Buffer.from('efdd0a0400000400', 'hex'),
-  Authenticate: Buffer.from('efdd0b3031323334353637383930313233349a6d', 'hex'),
-}
-
 const PORT = process.env.PORT || 8080
 const MAC = process.env.MAC_ADDRESS || ''
+
 let initializeConnection
 let kettlePeripheral
 let kettleCharacterist
 let isConnected = false
 let powerState = PowerState.Off
-let tempStep = 0 //increment every step command
+
+const Command = {
+  step: 0,
+  Authenticate: () =>
+    Buffer.from('efdd0b3031323334353637383930313233349a6d', 'hex'),
+  PowerOff: () => Buffer.from('efdd0a0400000400', 'hex'),
+  PowerOn: () => {
+    this.step = 0
+    Buffer.from('efdd0a0000010100', 'hex')
+  },
+  Temperature: (temp) => {
+    this.step++
+    const s = numberToHex(this.step)
+    const t = numberToHex(temp)
+    const w = numberToHex(this.step + temp).slice(-2)
+    const string = `efdd0a${s}01${t}${numberToHex(w)}01`
+    return Buffer.from(string, 'hex')
+  },
+}
+
+const PowerState = {
+  Off: 0,
+  On: 1,
+}
 
 const asyncHandler = (fn) => (req, res, next) =>
   Promise.resolve(fn(req, res, next)).catch(next)
@@ -29,14 +42,6 @@ const asyncHandler = (fn) => (req, res, next) =>
 const numberToHex = (n) => {
   const hexString = n.toString(16)
   return hexString.length === 1 ? `0${hexString}` : hexString
-}
-
-const TEMP = (step, temp) => {
-  const s = numberToHex(step)
-  const t = numberToHex(temp)
-  const w = numberToHex(step + temp).slice(-2)
-  const string = `efdd0a${s}01${t}${numberToHex(w)}01`
-  return Buffer.from(string, 'hex')
 }
 
 ;(async () => {
@@ -63,7 +68,6 @@ const TEMP = (step, temp) => {
           if (err) throw err
           isConnected = false
           powerState = PowerState.Off
-          tempStep = 0
         })
         initializeConnection = async () => {
           if (isConnected) return
@@ -78,7 +82,7 @@ const TEMP = (step, temp) => {
             console.log(`Received: "${hex}"`)
           })
           // await kettleCharacterist.subscribeAsync()
-          await kettleCharacterist.writeAsync(Command.Authenticate, true)
+          await kettleCharacterist.writeAsync(Command.Authenticate(), true)
         }
         await initializeConnection()
       }
@@ -115,13 +119,12 @@ const TEMP = (step, temp) => {
       wakeupScanner,
       asyncHandler(async (req, res, next) => {
         const { targetState } = req.body
-        const cmd =
+        const buffer =
           parseInt(targetState, 10) === PowerState.On
-            ? Command.PowerOn
-            : Command.PowerOff
-        await kettleCharacterist.writeAsync(cmd, true)
+            ? Command.PowerOn()
+            : Command.PowerOff()
+        await kettleCharacterist.writeAsync(buffer, true)
         powerState = targetState
-        tempStep = 0
         next()
       }),
       sendStatus,
@@ -143,9 +146,8 @@ const TEMP = (step, temp) => {
             .json({ error: 'Temperature must at or above 104' })
         }
 
-        tempStep++
-        const buff = TEMP(tempStep, temperature)
-        await kettleCharacterist.writeAsync(buff, true)
+        const buffer = Command.Temperature(temperature)
+        await kettleCharacterist.writeAsync(buffer, true)
         next()
       }),
       sendStatus,
