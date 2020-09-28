@@ -28,6 +28,7 @@ sudo apt install nodejs
 ```
 sudo apt-get install bluetooth bluez libbluetooth-dev libudev-dev bluez-hcidump
 bluetoothctl power on
+sudo setcap cap_net_raw+eip $(eval readlink -f $(which node))
 ```
 
 ## Configure PM2
