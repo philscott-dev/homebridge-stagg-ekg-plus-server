@@ -3,15 +3,25 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const noble = require('@abandonware/noble')
 
+const PowerState = {
+  Off: 0,
+  On: 1,
+}
+
+const Command = {
+  PowerOn: Buffer.from('efdd0a0000010100', 'hex'),
+  PowerOff: Buffer.from('efdd0a0400000400', 'hex'),
+  Authenticate: Buffer.from('efdd0b3031323334353637383930313233349a6d', 'hex'),
+}
+
 const PORT = process.env.PORT || 8080
 const MAC = process.env.MAC_ADDRESS || ''
 let initializeConnection
 let kettlePeripheral
 let kettleCharacterist
 let isConnected = false
-let isScanning = false
-let isPoweredOn = false
-let tempStep = 0
+let powerState = PowerState.Off
+let tempStep = 0 //increment every step command
 
 const asyncHandler = (fn) => (req, res, next) =>
   Promise.resolve(fn(req, res, next)).catch(next)
@@ -20,18 +30,6 @@ const numberToHex = (n) => {
   const hexString = n.toString(16)
   return hexString.length === 1 ? `0${hexString}` : hexString
 }
-
-/**
- * Kettle Commands
- */
-
-const AUTHENTICATE = Buffer.from(
-  'efdd0b3031323334353637383930313233349a6d',
-  'hex',
-)
-const ON = Buffer.from('efdd0a0000010100', 'hex')
-
-const OFF = Buffer.from('efdd0a0400000400', 'hex')
 
 const TEMP = (step, temp) => {
   const s = numberToHex(step)
@@ -43,25 +41,14 @@ const TEMP = (step, temp) => {
 
 ;(async () => {
   try {
-    noble.on('scanStart', () => {
-      console.log('Scanning: TRUE')
-      isScanning = true
-    })
-    noble.on('scanStop', () => {
-      console.log('Scanning: FALSE')
-      isScanning = false
-    })
-    noble.on('warning', (warn) => {
-      console.log('Warning:')
-      console.log(warn)
-    })
-
+    noble.on('scanStart', () => console.log('Scanning: TRUE'))
+    noble.on('scanStop', () => console.log('Scanning: FALSE'))
+    noble.on('warning', (warn) => console.log(warn))
     noble.on('stateChange', async (state) => {
       if (state === 'poweredOn') {
         await noble.startScanningAsync([], false)
       }
     })
-
     noble.on('discover', async (peripheral) => {
       if ([peripheral.id, peripheral.address].includes(MAC.toLowerCase())) {
         await noble.stopScanningAsync()
@@ -75,48 +62,42 @@ const TEMP = (step, temp) => {
           console.log('Kettle: Disonnected')
           if (err) throw err
           isConnected = false
-          isPoweredOn = false
+          powerState = PowerState.Off
           tempStep = 0
         })
-
         initializeConnection = async () => {
+          if (isConnected) return
           await kettlePeripheral.connectAsync()
           const discovered = await kettlePeripheral.discoverSomeServicesAndCharacteristicsAsync(
             ['1820'],
             ['2a80'],
           )
-
           kettleCharacterist = discovered.characteristics[0]
           kettleCharacterist.on('data', (data) => {
             const hex = data.toString('hex')
             console.log(`Received: "${hex}"`)
           })
-
-          // subscribe to be notified whenever the peripheral update the characteristic
           // await kettleCharacterist.subscribeAsync()
-          await kettleCharacterist.writeAsync(AUTHENTICATE, true)
+          await kettleCharacterist.writeAsync(Command.Authenticate, true)
         }
-
         await initializeConnection()
       }
     })
 
     /**
-     * Express Server
+     * Server
      */
 
     const app = express()
     app.use(bodyParser.json())
 
     const wakeupScanner = asyncHandler(async (req, res, next) => {
-      if (!isConnected) {
-        await initializeConnection()
-      }
+      await initializeConnection()
       return next()
     })
 
     const sendStatus = asyncHandler(async (_, res) => {
-      res.json({ isConnected, isScanning, isPoweredOn })
+      res.json({ isConnected, powerState })
     })
 
     app.get(
@@ -125,7 +106,6 @@ const TEMP = (step, temp) => {
       asyncHandler(async (_req, _res, next) => {
         const data = await kettleCharacterist.readAsync()
         console.log(data.toString('hex'))
-        isPoweredOn = true
         next()
       }),
       sendStatus,
@@ -135,41 +115,23 @@ const TEMP = (step, temp) => {
       wakeupScanner,
       asyncHandler(async (req, res, next) => {
         const { targetState } = req.body
-        console.log(targetState)
-        //await kettleCharacterist.writeAsync(ON, true)
-        //isPoweredOn = true
-        next()
-      }),
-      sendStatus,
-    )
-    app.get(
-      '/api/power/on',
-      wakeupScanner,
-      asyncHandler(async (_req, _res, next) => {
-        await kettleCharacterist.writeAsync(ON, true)
-        isPoweredOn = true
+        const cmd =
+          parseInt(targetState, 10) === PowerState.On
+            ? Command.PowerOn
+            : Command.PowerOff
+        await kettleCharacterist.writeAsync(cmd, true)
+        powerState = targetState
         tempStep = 0
         next()
       }),
       sendStatus,
     )
-
-    app.get(
-      '/api/power/off',
-      wakeupScanner,
-      asyncHandler(async (_req, _res, next) => {
-        await kettleCharacterist.writeAsync(OFF, true)
-        isPoweredOn = false
-        tempStep = 0
-        next()
-      }),
-      sendStatus,
-    )
-    app.get(
-      '/api/temp/:deg',
+    app.post(
+      '/api/temperature',
       wakeupScanner,
       asyncHandler(async (req, res, next) => {
-        const temperature = parseInt(req.params.deg, 10)
+        const { targetTemp } = req.body
+        const temperature = parseInt(targetTemp, 10)
         if (temperature > 212) {
           return res
             .status(422)
