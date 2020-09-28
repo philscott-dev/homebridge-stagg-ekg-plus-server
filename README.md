@@ -1,51 +1,73 @@
-# homebridge-stagg-ekg-plus
-Server & Homebridge plugin for the Stagg EKG+ electric kettle
+# homebridge-stagg-ekg-plus-server
+Fellow Stagg EKG+ server (pi 4) for homebridge-stagg-ekg-plus plugin
 
 ## Setup Node
+```
 curl -sL https://deb.nodesource.com/setup_12.x | sudo bash -
 sudo apt install nodejs
 sudo apt-get install bluetooth bluez libbluetooth-dev libudev-dev
+```
 
-## Configure pm2
+## Configure PM2
+```
 sudo npm install -g pm2
 sudo pm2 startup systemd
 pm2 start serverfile
 pm2 save
+```
 
-## Configure Pi 4 wifi
+## Configure Wifi
 Turn Off Power Save
+```
 /sbin/iw wlan0 get power_save
 sudo nano /etc/rc.local
-add BEFORE exit 0: sudo /sbin/iw wlan0 set power_save off 
+```
+
+add BEFORE exit 0 
+```
+sudo /sbin/iw wlan0 set power_save off 
+```
 
 Configure Netowrk
+```
 sudo nano /etc/wpa_supplicant/wpa_supplicant.conf
 network={
     ssid="The_ESSID_from_earlier"
     psk="Your_wifi_password"
 }
+```
 
-## Turn on bluetooth
+## Bluetooth
+```
 bluetoothctl power on
-
+```
 
 ## Troubleshooting
 Troubleshooting Bluetooth
+```
 sudo apt-get install bluez-hcidump
 sudo hcidump -t -x
+```
 
 Upgrade Raspberry Pi
+```
 sudo apt update
 sudo apt dist-upgrade -y
 sudo reboot
+```
 
 ## Kettle
+```
 Fahrenheit Range: 140 - 212
 Celsius Range: 40 - 100 
+```
 
+```
 Service: 1820
 Characteristic: 2a80
+```
 
+```
 Commands (Hex)
 PowerOn:       efdd0a0000010100
 PowerOff:      efdd0a0400000400
@@ -55,6 +77,7 @@ Temperature:   efdd0ass01ttww01
     ss = step (hex)
     tt = temperature (hex)
     ww = ss + tt, then slice(-2)
+```
 
 Reading temperature data:
 
@@ -66,6 +89,7 @@ Valid temperature values range from 40 to 212 depending on your C/F setting. A v
 Note that there is no Celsius/Fahrenheit setting in the protocol, you can determine the setting based on the current target temp. So a temperature setting in the range 104-212 means it is in F mode, while numbers 100 or less denote C. The kettle does not support settings the temp below 104 F so there is no overlap.
 
 
+```
 0|EKG Server  | Received: "0964020200560100000cbc"
 
 0|EKG Server  | Received: "ffffffff"
@@ -98,4 +122,4 @@ Note that there is no Celsius/Fahrenheit setting in the protocol, you can determ
 0|EKG Server  | Received: "ed0ded0d"
 0|EKG Server  | Received: "efdd05"
 0|EKG Server  | Received: "ffffffff"
-
+```
