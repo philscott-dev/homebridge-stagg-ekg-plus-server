@@ -24,7 +24,7 @@ const Command = {
   PowerOff: () => Buffer.from('efdd0a0400000400', 'hex'),
   PowerOn: () => {
     this.step = 0
-    Buffer.from('efdd0a0000010100', 'hex')
+    return Buffer.from('efdd0a0000010100', 'hex')
   },
   Temperature: (temp) => {
     this.step++
@@ -123,6 +123,7 @@ const numberToHex = (n) => {
           parseInt(targetState, 10) === PowerState.On
             ? Command.PowerOn()
             : Command.PowerOff()
+        console.log(buffer)
         await kettleCharacterist.writeAsync(buffer, true)
         powerState = targetState
         next()
