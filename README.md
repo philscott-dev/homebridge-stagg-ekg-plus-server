@@ -16,8 +16,8 @@ MAC_ADDRESS=00:11:22:33:44:55
 PORT=8080
 ```
 
-MAC_ADDRESS: Bluetooth Mac Address for your kettle.
-PORT: Port you'd like your server to be hosted on.
+**MAC_ADDRESS**: Bluetooth Mac Address for your kettle. <br />
+**PORT**: Port you'd like your server to be hosted on.
 
 
 ## Install Node 
