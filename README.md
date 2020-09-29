@@ -53,6 +53,8 @@ sudo /sbin/iw wlan0 set power_save off
 
 Configure Network Connection:
 ```
+sudo rfkill unblock 0
+sudo ifconfig wlan0 up
 sudo nano /etc/wpa_supplicant/wpa_supplicant.conf
 network={
     ssid="The_ESSID_from_earlier"
