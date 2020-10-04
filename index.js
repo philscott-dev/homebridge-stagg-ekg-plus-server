@@ -77,9 +77,10 @@ const numberToHex = (n) => {
             ['2a80'],
           )
           kettleCharacterist = discovered.characteristics[0]
-          kettleCharacterist.on('data', (data) => {
-            const hex = data.toString('hex')
-            console.log(`Received: "${hex}"`)
+          kettleCharacterist.on('data', (buf) => {
+            // const hex = buf.toString('hex')
+            // console.log(`Received: "${hex}"`)
+            console.log(buf.values())
           })
           await kettleCharacterist.subscribeAsync()
           await kettleCharacterist.writeAsync(Command.Authenticate(), true)
