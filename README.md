@@ -22,8 +22,11 @@ PORT=8080
 
 ## Install Node
 ```
-curl -sL https://deb.nodesource.com/setup_12.x | sudo bash -
-sudo apt install nodejs
+wget https://nodejs.org/dist/v11.15.0/node-v11.15.0-linux-armv6l.tar.gz
+tar -xzf node-v11.15.0-linux-armv6l.tar.gz
+sudo cp -R node-v11.15.0-linux-armv6l/* /usr/local/
+node -v
+rm -rf node-v*
 ```
 
 ## Configure Bluetooth
@@ -97,6 +100,27 @@ Temperature:   efdd0ass01ttww01
     ss = step (hex)
     tt = temperature (hex)
     ww = ss + tt, then slice(-2)
+
+Cycle:
+Received: "ffffffff" // Start Cycle
+Received: "efdd03"
+Received: "20012001" // Current Temp or Off (32)
+Received: "efdd02"
+Received: "cd01cd01" // Target Temp
+Received: "efdd00"
+Received: "000000"
+Received: "efdd01"
+Received: "010100"
+Received: "efdd06"
+Received: "000000"
+Received: "efdd07"
+Received: "000000"
+Received: "efdd08"
+Received: "010100"
+Received: "efdd04"
+Received: "00000000" // Hold Timer? (changes from 0 after target temp hits)
+Received: "efdd05"
+Received: "ffffffff" // End Cycle
 ```
 
 Reading temperature data:
@@ -110,190 +134,3 @@ Note that there is no Celsius/Fahrenheit setting in the protocol, you can determ
 
 
 ```
-Received: "ffffffff"
-Received: "efdd03"
-Received: "cc01cc01" //current
-Received: "efdd02"
-Received: "cd01cd01" //target
-Received: "efdd00"
-Received: "010100"
-Received: "efdd01"
-Received: "010100"
-Received: "efdd06"
-Received: "010100"
-Received: "efdd07"
-Received: "000000"
-Received: "efdd08"
-Received: "010100"
-Received: "efdd04"
-Received: "be0abe0a"
-Received: "efdd05"
-Received: "ffffffff"
-Received: "efdd03"
-Received: "cc01cc01"
-Received: "efdd02"
-Received: "cd01cd01"
-Received: "efdd00"
-Received: "010100"
-Received: "efdd01"
-Received: "010100"
-Received: "efdd06"
-Received: "010100"
-Received: "efdd07"
-Received: "000000"
-Received: "efdd08"
-Received: "010100"
-Received: "efdd04"
-Received: "bd0abd0a"
-Received: "efdd05"
-Received: "ffffffff"
-Received: "efdd03"
-Received: "cd01cd01"
-Received: "efdd02"
-Received: "cd01cd01"
-Received: "efdd00"
-Received: "010100"
-Received: "efdd01"
-Received: "010100"
-Received: "efdd06"
-Received: "010100"
-Received: "efdd07"
-Received: "000000"
-Received: "efdd08"
-Received: "010100"
-Received: "efdd04"
-Received: "bc0abc0a"
-Received: "efdd05"
-Received: "ffffffff"
-Received: "efdd03"
-Received: "cd01cd01"
-Received: "efdd02"
-Received: "cd01cd01"
-Received: "efdd00"
-Received: "010100"
-Received: "efdd01"
-Received: "010100"
-Received: "efdd06"
-Received: "010100"
-Received: "efdd07"
-Received: "000000"
-Received: "efdd08"
-Received: "010100"
-Received: "efdd04"
-Received: "bb0abb0a"
-Received: "efdd05"
-Received: "ffffffff"
-Received: "efdd03"
-Received: "cd01cd01"
-Received: "efdd02"
-Received: "cd01cd01"
-Received: "efdd00"
-Received: "010100"
-Received: "efdd01"
-Received: "010100"
-Received: "efdd06"
-Received: "010100"
-Received: "efdd07"
-Received: "000000"
-Received: "efdd08"
-Received: "010100"
-Received: "efdd04"
-Received: "ba0aba0a"
-Received: "efdd05"
-Received: "ffffffff"
-Received: "efdd03"
-Received: "cd01cd01"
-Received: "efdd02"
-Received: "cd01cd01"
-Received: "efdd00"
-Received: "010100"
-Received: "efdd01"
-Received: "010100"
-Received: "efdd06"
-Received: "010100"
-Received: "efdd07"
-```
-
-
-
-Received: "ffffffff"
-Received: "efdd03" //current
-Received: "cd01cd01"
-Received: "efdd02" //target
-Received: "cd01cd01"
-Received: "efdd00"
-Received: "010100"
-Received: "efdd01"
-Received: "010100"
-Received: "efdd06"
-Received: "010100"
-Received: "efdd07"
-Received: "000000"
-Received: "efdd08"
-Received: "010100"
-Received: "efdd04"
-Received: "2f022f02"
-Received: "efdd05"
-Received: "ffffffff"
-
-
-on
-Received: "ffffffff"
-Received: "efdd03"
-Received: "cc01cc01"
-Received: "efdd02"
-Received: "cd01cd01"
-Received: "efdd00"
-Received: "010100"
-Received: "efdd01"
-Received: "010100"
-Received: "efdd06"
-Received: "010100"
-Received: "efdd07"
-Received: "000000"
-Received: "efdd08"
-Received: "010100"
-Received: "efdd04"
-Received: "fd0dfd0d"
-Received: "efdd05"
-Received: "ffffffff"
-
-
-off
-Received: "ffffffff"
-Received: "efdd03"
-Received: "20012001" //current or off
-Received: "efdd02"
-Received: "cd01cd01"
-Received: "efdd00"
-Received: "000000"
-Received: "efdd01"
-Received: "010100"
-Received: "efdd06"
-Received: "000000"
-Received: "efdd07"
-Received: "000000"
-Received: "efdd08"
-Received: "010100"
-Received: "efdd04"
-Received: "00000000"
-
-Received: "ffffffff" //frame
-Received: "efdd03"
-Received: "20012001" //current or off
-Received: "efdd02"
-Received: "cd01cd01" //target
-Received: "efdd00"
-Received: "000000"
-Received: "efdd01"
-Received: "010100"
-Received: "efdd06"
-Received: "000000"
-Received: "efdd07"
-Received: "000000"
-Received: "efdd08"
-Received: "010100"
-Received: "efdd04"
-Received: "00000000" //hold counter in seconds
-Received: "efdd05"
-Received: "ffffffff" //frame
