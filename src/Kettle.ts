@@ -111,7 +111,7 @@ export default class Kettle {
     await this.characteristic?.writeAsync(buff, true)
   }
 
-  getStatus() {
+  getStatus = () => {
     console.log(this.targetTemp, this.currentTemp)
     return {
       targetTemp: this.targetTemp,
@@ -124,7 +124,7 @@ export default class Kettle {
    * Handle Data
    */
 
-  onData(buff: Buffer) {
+  onData = (buff: Buffer) => {
     const hex = buff.toString('hex')
     this.cycle = hex === 'ffffffff' ? 0 : this.cycle + 1
     if (this.cycle === 2) {
