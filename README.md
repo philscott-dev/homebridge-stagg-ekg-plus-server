@@ -111,9 +111,9 @@ Note that there is no Celsius/Fahrenheit setting in the protocol, you can determ
 ```
 Received: "ffffffff"
 Received: "efdd03"
-Received: "cc01cc01"
+Received: "cc01cc01" //current
 Received: "efdd02"
-Received: "cd01cd01"
+Received: "cd01cd01" //target
 Received: "efdd00"
 Received: "010100"
 Received: "efdd01"
@@ -212,3 +212,87 @@ Received: "efdd06"
 Received: "010100"
 Received: "efdd07"
 ```
+
+
+
+Received: "ffffffff"
+Received: "efdd03" //current
+Received: "cd01cd01"
+Received: "efdd02" //target
+Received: "cd01cd01"
+Received: "efdd00"
+Received: "010100"
+Received: "efdd01"
+Received: "010100"
+Received: "efdd06"
+Received: "010100"
+Received: "efdd07"
+Received: "000000"
+Received: "efdd08"
+Received: "010100"
+Received: "efdd04"
+Received: "2f022f02"
+Received: "efdd05"
+Received: "ffffffff"
+
+
+on
+Received: "ffffffff"
+Received: "efdd03"
+Received: "cc01cc01"
+Received: "efdd02"
+Received: "cd01cd01"
+Received: "efdd00"
+Received: "010100"
+Received: "efdd01"
+Received: "010100"
+Received: "efdd06"
+Received: "010100"
+Received: "efdd07"
+Received: "000000"
+Received: "efdd08"
+Received: "010100"
+Received: "efdd04"
+Received: "fd0dfd0d"
+Received: "efdd05"
+Received: "ffffffff"
+
+
+off
+Received: "ffffffff"
+Received: "efdd03"
+Received: "20012001" //current or off
+Received: "efdd02"
+Received: "cd01cd01"
+Received: "efdd00"
+Received: "000000"
+Received: "efdd01"
+Received: "010100"
+Received: "efdd06"
+Received: "000000"
+Received: "efdd07"
+Received: "000000"
+Received: "efdd08"
+Received: "010100"
+Received: "efdd04"
+Received: "00000000"
+
+Received: "ffffffff" //frame
+Received: "efdd03"
+Received: "20012001" //current or off
+Received: "efdd02"
+Received: "cd01cd01" //target
+Received: "efdd00"
+Received: "000000"
+Received: "efdd01"
+Received: "010100"
+Received: "efdd06"
+Received: "000000"
+Received: "efdd07"
+Received: "000000"
+Received: "efdd08"
+Received: "010100"
+Received: "efdd04"
+Received: "00000000" //hold counter in seconds
+Received: "efdd05"
+Received: "ffffffff" //frame
