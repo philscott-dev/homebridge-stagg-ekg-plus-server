@@ -111,7 +111,8 @@ export default class Kettle {
     await this.characteristic?.writeAsync(buff, true)
   }
 
-  getStatus = () => {
+  getStatus() {
+    console.log(this.targetTemp, this.currentTemp)
     return {
       targetTemp: this.targetTemp,
       currentTemp: this.currentTemp,
