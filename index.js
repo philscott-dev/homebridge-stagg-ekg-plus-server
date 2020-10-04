@@ -81,7 +81,7 @@ const numberToHex = (n) => {
             const hex = data.toString('hex')
             console.log(`Received: "${hex}"`)
           })
-          // await kettleCharacterist.subscribeAsync()
+          await kettleCharacterist.subscribeAsync()
           await kettleCharacterist.writeAsync(Command.Authenticate(), true)
         }
         await initializeConnection()

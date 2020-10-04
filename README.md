@@ -24,9 +24,9 @@ curl -sL https://deb.nodesource.com/setup_12.x | sudo bash -
 sudo apt install nodejs
 ```
 
-## Install Bluetooth
+## Configure Bluetooth
 ```
-sudo apt-get install bluetooth bluez libbluetooth-dev libudev-dev bluez-hcidump
+<!-- sudo apt-get install bluetooth bluez libbluetooth-dev libudev-dev bluez-hcidump -->
 bluetoothctl power on
 sudo setcap cap_net_raw+eip $(eval readlink -f $(which node))
 ```
