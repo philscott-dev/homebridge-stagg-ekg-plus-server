@@ -109,3 +109,5 @@ dist
 # package lock
 package-lock.json
 
+# scratch pad
+test.js
