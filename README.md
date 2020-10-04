@@ -39,7 +39,7 @@ sudo setcap cap_net_raw+eip $(eval readlink -f $(which node))
 ```
 sudo npm install -g pm2
 sudo pm2 startup systemd
-pm2 start index.js --name "homebridge-stagg-ekg-plus-server"
+pm2 start npm --name "homebridge-stagg-ekg-plus-server" -- start
 pm2 save
 ```
 
@@ -67,11 +67,6 @@ network={
 ```
 
 ## Troubleshooting
-Troubleshooting Bluetooth:
-```
-sudo hcidump -t -x
-```
-
 Upgrade Raspberry Pi:
 ```
 sudo apt update
@@ -130,16 +125,4 @@ Cycle:
 16 Received: "00000000" // Hold Timer? (changes from 0 after target temp hits)
 17 Received: "efdd05"
 0  Received: "ffffffff" // End Cycle
-```
-
-Reading temperature data:
-
-After authenticating, the data the kettle is sending will now start to include the temperature info.
-There are packets with 3 character payloads in the form eedd0x which cycle from 0 to 8.
-There are also packets w/4 hex char payloads. These are in the form 00 00 00 00, FF FF FF FF FF, and xx 01 xx 01.
-Between FF FF FF FF packets, you'll get two temperature packets. The first is the current temperature in the kettle. The second one is the target temperature setting.
-Valid temperature values range from 40 to 212 depending on your C/F setting. A value of freezing for the current temperature denotes the kettle being off.
-Note that there is no Celsius/Fahrenheit setting in the protocol, you can determine the setting based on the current target temp. So a temperature setting in the range 104-212 means it is in F mode, while numbers 100 or less denote C. The kettle does not support settings the temp below 104 F so there is no overlap.
-
-
 ```
