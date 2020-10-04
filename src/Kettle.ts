@@ -1,5 +1,6 @@
 import noble, { Peripheral, Characteristic } from '@abandonware/noble'
 import { numberToHex, hexToNumber } from './helpers/hex'
+import { PowerState } from './enum'
 
 export default class Kettle {
   private step: number
@@ -10,7 +11,7 @@ export default class Kettle {
   private peripheral: Peripheral
   private characteristic: Characteristic
 
-  constructor(macAddress) {
+  constructor(macAddress: string) {
     this.step = 0
     this.currentTemp = 32
     this.targetTemp = 205
@@ -84,30 +85,27 @@ export default class Kettle {
    * Characteristic Methods
    */
 
-  authenticate() {
+  authenticate = async () => {
     const buff = Buffer.from('efdd0b3031323334353637383930313233349a6d', 'hex')
-    this.characteristic.writeAsync(buff, true)
+    await this.characteristic.writeAsync(buff, true)
   }
 
-  setPowerOn() {
+  setPower = async (targetState: number) => {
     this.step = 0
-    const buff = Buffer.from('efdd0a0000010100', 'hex')
-    this.characteristic.writeAsync(buff, true)
+    const on = Buffer.from('efdd0a0000010100', 'hex')
+    const off = Buffer.from('efdd0a0400000400', 'hex')
+    const buff = targetState === PowerState.On ? on : off
+    await this.characteristic.writeAsync(buff, true)
   }
 
-  setPowerOff() {
-    const buff = Buffer.from('efdd0a0400000400', 'hex')
-    this.characteristic.writeAsync(buff, true)
-  }
-
-  setTemp(temp: number) {
+  setTemp = async (temp: number) => {
     this.step = this.step + 1
     const s = numberToHex(this.step)
     const t = numberToHex(temp)
     const w = numberToHex(this.step + temp).slice(-2)
     const string = `efdd0a${s}01${t}${w}01`
     const buff = Buffer.from(string, 'hex')
-    this.characteristic.writeAsync(buff, true)
+    await this.characteristic.writeAsync(buff, true)
   }
 
   /**
