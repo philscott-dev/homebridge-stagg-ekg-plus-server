@@ -1,5 +1,7 @@
 # homebridge-stagg-ekg-plus-server
 Stagg EKG+ Server for [homebridge-stagg-ekg-plus](https://www.npmjs.com/package/homebridge-stagg-ekg-plus)
+<br />
+Note: This is intended to be used on a Pi Zero W. I had a lot of issues getting bluetooth to stay connected on Pi 3 & 4.
 
 ## Basic Setup
 ```
@@ -26,7 +28,6 @@ sudo apt install nodejs
 
 ## Configure Bluetooth
 ```
-<!-- sudo apt-get install bluetooth bluez libbluetooth-dev libudev-dev bluez-hcidump -->
 bluetoothctl power on
 sudo setcap cap_net_raw+eip $(eval readlink -f $(which node))
 ```
