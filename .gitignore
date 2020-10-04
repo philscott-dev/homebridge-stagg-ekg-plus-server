@@ -105,8 +105,5 @@ typings/
 # VS Code
 .vscode
 
-# package lock
-package-lock.json
-
 # scratch pad
 test.js
