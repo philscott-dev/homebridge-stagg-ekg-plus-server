@@ -111,7 +111,7 @@ export default class Kettle {
     await this.characteristic?.writeAsync(buff, true)
   }
 
-  getStatus() {
+  getStatus = () => {
     return {
       targetTemp: this.targetTemp,
       currentTemp: this.currentTemp,
@@ -128,6 +128,7 @@ export default class Kettle {
     this.cycle = hex === 'ffffffff' ? 0 : this.cycle + 1
     if (this.cycle === 2) {
       this.currentTemp = hexToNumber(hex)
+      console.log(`Current Temp: ${this.currentTemp}`)
     } else if (this.cycle === 4) {
       this.targetTemp = hexToNumber(hex)
     }
