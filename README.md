@@ -1,5 +1,7 @@
 # homebridge-stagg-ekg-plus-server
 Stagg EKG+ Server for [homebridge-stagg-ekg-plus](https://www.npmjs.com/package/homebridge-stagg-ekg-plus)
+<br />
+Note: This is intended to be used on a Pi Zero W. I had a lot of issues getting bluetooth to stay connected on Pi 3 & 4.
 
 ## Basic Setup
 ```
@@ -20,13 +22,15 @@ PORT=8080
 
 ## Install Node
 ```
-curl -sL https://deb.nodesource.com/setup_12.x | sudo bash -
-sudo apt install nodejs
+wget https://nodejs.org/dist/v11.15.0/node-v11.15.0-linux-armv6l.tar.gz
+tar -xzf node-v11.15.0-linux-armv6l.tar.gz
+sudo cp -R node-v11.15.0-linux-armv6l/* /usr/local/
+node -v
+rm -rf node-v*
 ```
 
-## Install Bluetooth
+## Configure Bluetooth
 ```
-sudo apt-get install bluetooth bluez libbluetooth-dev libudev-dev bluez-hcidump
 bluetoothctl power on
 sudo setcap cap_net_raw+eip $(eval readlink -f $(which node))
 ```
@@ -34,8 +38,12 @@ sudo setcap cap_net_raw+eip $(eval readlink -f $(which node))
 ## Configure PM2
 ```
 sudo npm install -g pm2
-sudo pm2 startup systemd
-pm2 start index.js --name "homebridge-stagg-ekg-plus-server"
+
+sudo pm2 startup systemd 
+or 
+sudo env PATH=$PATH:/usr/local/bin pm2 startup systemd -u pi --hp /home/pi
+
+pm2 start npm --name "homebridge-stagg-ekg-plus-server" -- start
 pm2 save
 ```
 
@@ -53,6 +61,8 @@ sudo /sbin/iw wlan0 set power_save off
 
 Configure Network Connection:
 ```
+sudo rfkill unblock 0
+sudo ifconfig wlan0 up
 sudo nano /etc/wpa_supplicant/wpa_supplicant.conf
 network={
     ssid="The_ESSID_from_earlier"
@@ -61,16 +71,21 @@ network={
 ```
 
 ## Troubleshooting
-Troubleshooting Bluetooth:
-```
-sudo hcidump -t -x
-```
-
 Upgrade Raspberry Pi:
 ```
 sudo apt update
+sudo apt upgrade
 sudo apt dist-upgrade -y
 sudo reboot
+```
+
+SSH Hang:
+```
+sudo nano /etc/ssh/sshd_config
+```
+and add:
+```
+IPQoS 0x00
 ```
 
 ## Kettle
@@ -94,49 +109,25 @@ Temperature:   efdd0ass01ttww01
     ss = step (hex)
     tt = temperature (hex)
     ww = ss + tt, then slice(-2)
-```
 
-Reading temperature data:
-
-After authenticating, the data the kettle is sending will now start to include the temperature info.
-There are packets with 3 character payloads in the form eedd0x which cycle from 0 to 8.
-There are also packets w/4 hex char payloads. These are in the form 00 00 00 00, FF FF FF FF FF, and xx 01 xx 01.
-Between FF FF FF FF packets, you'll get two temperature packets. The first is the current temperature in the kettle. The second one is the target temperature setting.
-Valid temperature values range from 40 to 212 depending on your C/F setting. A value of freezing for the current temperature denotes the kettle being off.
-Note that there is no Celsius/Fahrenheit setting in the protocol, you can determine the setting based on the current target temp. So a temperature setting in the range 104-212 means it is in F mode, while numbers 100 or less denote C. The kettle does not support settings the temp below 104 F so there is no overlap.
-
-
-```
-0|EKG Server  | Received: "0964020200560100000cbc"
-
-0|EKG Server  | Received: "ffffffff"
-0|EKG Server  | Received: "cc01cc01"
-0|EKG Server  | Received: "cd01cd01"
-0|EKG Server  | Received: "010100"
-0|EKG Server  | Received: "010100"
-0|EKG Server  | Received: "010100"
-0|EKG Server  | Received: "000000"
-0|EKG Server  | Received: "010100"
-0|EKG Server  | Received: "ed0ded0d"
-0|EKG Server  | Received: "ffffffff"
-
-0|EKG Server  | Received: "ffffffff"
-0|EKG Server  | Received: "efdd03"
-0|EKG Server  | Received: "cc01cc01"
-0|EKG Server  | Received: "efdd02"
-0|EKG Server  | Received: "cd01cd01"
-0|EKG Server  | Received: "efdd00"
-0|EKG Server  | Received: "010100"
-0|EKG Server  | Received: "efdd01"
-0|EKG Server  | Received: "010100"
-0|EKG Server  | Received: "efdd06"
-0|EKG Server  | Received: "010100"
-0|EKG Server  | Received: "efdd07"
-0|EKG Server  | Received: "000000"
-0|EKG Server  | Received: "efdd08"
-0|EKG Server  | Received: "010100"
-0|EKG Server  | Received: "efdd04"
-0|EKG Server  | Received: "ed0ded0d"
-0|EKG Server  | Received: "efdd05"
-0|EKG Server  | Received: "ffffffff"
+Cycle:
+0  Received: "ffffffff" // Start Cycle
+1  Received: "efdd03"
+2  Received: "20012001" // Current Temp or Off (32)
+3  Received: "efdd02"
+4  Received: "cd01cd01" // Target Temp
+5  Received: "efdd00"
+6  Received: "000000"
+7  Received: "efdd01"
+8  Received: "010100"
+9  Received: "efdd06"
+10 Received: "000000"
+11 Received: "efdd07"
+12 Received: "000000"
+13 Received: "efdd08"
+14 Received: "010100"
+15 Received: "efdd04"
+16 Received: "00000000" // Hold Timer? (changes from 0 after target temp hits)
+17 Received: "efdd05"
+0  Received: "ffffffff" // End Cycle
 ```
