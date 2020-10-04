@@ -2,16 +2,13 @@
   "compilerOptions": {
     "target": "ES2018",
     "module": "commonjs",
-    "moduleResolution": "node",
     "lib": ["ES2020"],
-    "baseUrl": "./src",
-    "rootDir": "./src",
-    "outDir": "./dist",
+    "rootDir": "src",
+    "outDir": ".",
     "inlineSourceMap": true,
     "strict": true,
     "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "allowJs": true,
+    "forceConsistentCasingInFileNames": true
   },
-  "include": ["./src/**/*.ts"]
+  "exclude": ["node_modules"]
 }

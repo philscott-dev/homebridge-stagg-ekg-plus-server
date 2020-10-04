@@ -16,8 +16,6 @@ export default class Kettle {
     this.currentTemp = 32
     this.targetTemp = 205
     this.isScanning = false
-    this.characteristic = undefined
-    this.peripheral = undefined
     this.macAddress = macAddress.toLowerCase()
     noble.on('scanStart', this.onScanStart)
     noble.on('scanStop', this.onScanStop)
@@ -90,7 +88,7 @@ export default class Kettle {
 
   authenticate = async () => {
     const buff = Buffer.from('efdd0b3031323334353637383930313233349a6d', 'hex')
-    await this.characteristic.writeAsync(buff, true)
+    await this.characteristic?.writeAsync(buff, true)
   }
 
   setPower = async (targetState: number) => {
@@ -98,7 +96,7 @@ export default class Kettle {
     const on = Buffer.from('efdd0a0000010100', 'hex')
     const off = Buffer.from('efdd0a0400000400', 'hex')
     const buff = targetState === PowerState.On ? on : off
-    await this.characteristic.writeAsync(buff, true)
+    await this.characteristic?.writeAsync(buff, true)
   }
 
   setTemp = async (temp: number) => {
@@ -108,7 +106,7 @@ export default class Kettle {
     const w = numberToHex(this.step + temp).slice(-2)
     const string = `efdd0a${s}01${t}${w}01`
     const buff = Buffer.from(string, 'hex')
-    await this.characteristic.writeAsync(buff, true)
+    await this.characteristic?.writeAsync(buff, true)
   }
 
   /**
