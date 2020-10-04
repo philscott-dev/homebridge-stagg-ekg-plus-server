@@ -17,7 +17,8 @@ const MAC = process.env.MAC_ADDRESS || ''
     app.get(
       '/api/status',
       asyncHandler(async (_req, res) => {
-        res.json({})
+        const status = kettle.getStatus()
+        res.json(status)
       }),
     )
     app.post(

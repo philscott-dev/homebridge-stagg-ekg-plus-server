@@ -4,6 +4,7 @@ import { PowerState } from './enum'
 
 export default class Kettle {
   private step: number
+  private cycle: number
   private currentTemp: number
   private targetTemp: number
   private isScanning: boolean
@@ -13,6 +14,7 @@ export default class Kettle {
 
   constructor(macAddress: string) {
     this.step = 0
+    this.cycle = 0
     this.currentTemp = 32
     this.targetTemp = 205
     this.isScanning = false
@@ -109,11 +111,25 @@ export default class Kettle {
     await this.characteristic?.writeAsync(buff, true)
   }
 
+  getStatus() {
+    return {
+      targetTemp: this.targetTemp,
+      currentTemp: this.currentTemp,
+      powerState: this.currentTemp === 32 ? PowerState.Off : PowerState.On,
+    }
+  }
+
   /**
    * Handle Data
    */
 
   onData(buff: Buffer) {
     const hex = buff.toString('hex')
+    this.cycle = hex === 'ffffffff' ? 0 : this.cycle + 1
+    if (this.cycle === 2) {
+      this.currentTemp = hexToNumber(hex)
+    } else if (this.cycle === 4) {
+      this.targetTemp = hexToNumber(hex)
+    }
   }
 }

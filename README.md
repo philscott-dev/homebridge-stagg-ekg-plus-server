@@ -111,25 +111,25 @@ Temperature:   efdd0ass01ttww01
     ww = ss + tt, then slice(-2)
 
 Cycle:
-Received: "ffffffff" // Start Cycle
-Received: "efdd03"
-Received: "20012001" // Current Temp or Off (32)
-Received: "efdd02"
-Received: "cd01cd01" // Target Temp
-Received: "efdd00"
-Received: "000000"
-Received: "efdd01"
-Received: "010100"
-Received: "efdd06"
-Received: "000000"
-Received: "efdd07"
-Received: "000000"
-Received: "efdd08"
-Received: "010100"
-Received: "efdd04"
-Received: "00000000" // Hold Timer? (changes from 0 after target temp hits)
-Received: "efdd05"
-Received: "ffffffff" // End Cycle
+0  Received: "ffffffff" // Start Cycle
+1  Received: "efdd03"
+2  Received: "20012001" // Current Temp or Off (32)
+3  Received: "efdd02"
+4  Received: "cd01cd01" // Target Temp
+5  Received: "efdd00"
+6  Received: "000000"
+7  Received: "efdd01"
+8  Received: "010100"
+9  Received: "efdd06"
+10 Received: "000000"
+11 Received: "efdd07"
+12 Received: "000000"
+13 Received: "efdd08"
+14 Received: "010100"
+15 Received: "efdd04"
+16 Received: "00000000" // Hold Timer? (changes from 0 after target temp hits)
+17 Received: "efdd05"
+0  Received: "ffffffff" // End Cycle
 ```
 
 Reading temperature data:
