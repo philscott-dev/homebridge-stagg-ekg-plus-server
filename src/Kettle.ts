@@ -30,15 +30,15 @@ export default class Kettle {
    * Noble Methods
    */
 
-  onScanStart() {
+  onScanStart = () => {
     this.isScanning = true
   }
 
-  onScanStop() {
+  onScanStop = () => {
     this.isScanning = false
   }
 
-  onWarning(warning: any) {
+  onWarning = (warning: any) => {
     console.log(warning)
   }
 
@@ -74,14 +74,16 @@ export default class Kettle {
    * Peripheral Methods
    */
 
-  onConnect(err: string) {
+  onConnect = (err: string) => {
     console.log('Kettle: Connected')
     if (err) console.log(err)
   }
 
-  onDisconnect(err: string) {
+  onDisconnect = async (err: string) => {
     console.log('Kettle: Disonnected')
     if (err) throw err
+    // try reconnecting
+    await noble.startScanningAsync([], false)
   }
 
   /**
