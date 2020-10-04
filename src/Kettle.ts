@@ -8,13 +8,16 @@ export default class Kettle {
   private targetTemp: number
   private isScanning: boolean
   private macAddress: string
-  private peripheral: Peripheral
-  private characteristic: Characteristic
+  private peripheral?: Peripheral
+  private characteristic?: Characteristic
 
   constructor(macAddress: string) {
     this.step = 0
     this.currentTemp = 32
     this.targetTemp = 205
+    this.isScanning = false
+    this.characteristic = undefined
+    this.peripheral = undefined
     this.macAddress = macAddress.toLowerCase()
     noble.on('scanStart', this.onScanStart)
     noble.on('scanStop', this.onScanStop)
@@ -35,7 +38,7 @@ export default class Kettle {
     this.isScanning = false
   }
 
-  onWarning(warning) {
+  onWarning(warning: any) {
     console.log(warning)
   }
 
