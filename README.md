@@ -79,6 +79,15 @@ sudo apt dist-upgrade -y
 sudo reboot
 ```
 
+SSH Hang:
+```
+sudo nano /etc/ssh/sshd_config
+```
+Add:
+```
+IPQoS 0x00
+```
+
 ## Kettle
 ```
 Fahrenheit Range: 140 - 212

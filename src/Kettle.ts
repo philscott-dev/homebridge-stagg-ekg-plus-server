@@ -115,7 +115,5 @@ export default class Kettle {
 
   onData(buff: Buffer) {
     const hex = buff.toString('hex')
-    console.log(`Received: "${hex}"`)
-    console.log(hexToNumber(hex))
   }
 }

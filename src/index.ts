@@ -24,8 +24,10 @@ const MAC = process.env.MAC_ADDRESS || ''
       '/api/power',
       asyncHandler(async (req, res) => {
         const { targetState } = req.body
-        await kettle.setPower(parseInt(targetState, 10))
-        res.status(200)
+        const powerState = parseInt(targetState, 10)
+        await kettle.setPower(powerState)
+        console.log({ powerState })
+        res.json({ powerState })
       }),
     )
     app.post(
@@ -45,7 +47,8 @@ const MAC = process.env.MAC_ADDRESS || ''
         }
 
         await kettle.setTemp(temperature)
-        res.status(200)
+        console.log({ temperature })
+        res.json({ temperature })
       }),
     )
 
