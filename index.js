@@ -44,6 +44,14 @@ const numberToHex = (n) => {
   return hexString.length === 1 ? `0${hexString}` : hexString
 }
 
+const hexToNumber = (hexString) => {
+  var result = []
+  for (var i = 0; i < hexString.length; i += 2) {
+    result.push(parseInt(hexString.substr(i, 2), 16))
+  }
+  return parseInt(result, 10)
+}
+
 ;(async () => {
   try {
     noble.on('scanStart', () => console.log('Scanning: TRUE'))
@@ -78,9 +86,9 @@ const numberToHex = (n) => {
           )
           kettleCharacterist = discovered.characteristics[0]
           kettleCharacterist.on('data', (buf) => {
-            // const hex = buf.toString('hex')
-            // console.log(`Received: "${hex}"`)
-            console.log(buf.values())
+            const hex = buf.toString('hex')
+            console.log(`Received: "${hex}"`)
+            console.log(hexToNumber(hex))
           })
           await kettleCharacterist.subscribeAsync()
           await kettleCharacterist.writeAsync(Command.Authenticate(), true)
