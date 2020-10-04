@@ -38,7 +38,11 @@ sudo setcap cap_net_raw+eip $(eval readlink -f $(which node))
 ## Configure PM2
 ```
 sudo npm install -g pm2
-sudo pm2 startup systemd
+
+sudo pm2 startup systemd 
+or 
+sudo env PATH=$PATH:/usr/local/bin pm2 startup systemd -u pi --hp /home/pi
+
 pm2 start npm --name "homebridge-stagg-ekg-plus-server" -- start
 pm2 save
 ```
@@ -70,6 +74,7 @@ network={
 Upgrade Raspberry Pi:
 ```
 sudo apt update
+sudo apt upgrade
 sudo apt dist-upgrade -y
 sudo reboot
 ```
@@ -78,7 +83,7 @@ SSH Hang:
 ```
 sudo nano /etc/ssh/sshd_config
 ```
-Add:
+and add:
 ```
 IPQoS 0x00
 ```
