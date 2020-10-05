@@ -3,21 +3,16 @@ import { numberToHex, hexToNumber } from './helpers/hex'
 import { PowerState } from './enum'
 
 export default class Kettle {
-  private step: number
-  private cycle: number
-  private currentTemp: number
-  private targetTemp: number
-  private isScanning: boolean
+  private step: number = 0
+  private cycle: number = 0
+  private currentTemp: number = 32
+  private targetTemp: number = 205
+  private isScanning: boolean = false
   private macAddress: string
   private peripheral?: Peripheral
   private characteristic?: Characteristic
 
   constructor(macAddress: string) {
-    this.step = 0
-    this.cycle = 0
-    this.currentTemp = 32
-    this.targetTemp = 205
-    this.isScanning = false
     this.macAddress = macAddress.toLowerCase()
     noble.on('scanStart', this.onScanStart)
     noble.on('scanStop', this.onScanStop)
