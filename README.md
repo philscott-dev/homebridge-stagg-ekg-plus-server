@@ -1,16 +1,17 @@
 # homebridge-stagg-ekg-plus-server
 Stagg EKG+ Server for [homebridge-stagg-ekg-plus](https://www.npmjs.com/package/homebridge-stagg-ekg-plus)
-<br />
-```
-Note: This is intended to be used on a Pi Zero W. I had a lot of issues getting bluetooth to stay connected on Pi 3 & 4.
-```
+<br /><br />
+**Note**: 
+_This is intended to be used on a Pi Zero W_
+</br>
 
 ## Basic Setup
 ```
 git clone https://github.com/philscott-dev/homebridge-stagg-ekg-plus-server.git
 cd homebridge-stagg-ekg-plus-server
 npm install
-touch .env
+touch .env (then configure)
+npm start
 ```
 
 Config for `.env`:
@@ -67,8 +68,8 @@ sudo rfkill unblock 0
 sudo ifconfig wlan0 up
 sudo nano /etc/wpa_supplicant/wpa_supplicant.conf
 network={
-    ssid="The_ESSID_from_earlier"
-    psk="Your_wifi_password"
+    ssid="Your SSID"
+    psk="Your Wifi Password"
 }
 ```
 
@@ -81,7 +82,7 @@ sudo apt dist-upgrade -y
 sudo reboot
 ```
 
-SSH Hang:
+SSH Hanging?:
 ```
 sudo nano /etc/ssh/sshd_config
 ```
@@ -90,7 +91,7 @@ and add:
 IPQoS 0x00
 ```
 
-## Kettle
+## Kettle Notes
 ```
 Fahrenheit Range: 140 - 212
 Celsius Range: 40 - 100 
@@ -106,7 +107,6 @@ Commands (Hex)
 PowerOn:       efdd0a0000010100
 PowerOff:      efdd0a0400000400
 Authenticate:  efdd0b3031323334353637383930313233349a6d 
-    in decimal: 012345678901234
 Temperature:   efdd0ass01ttww01
     ss = step (hex)
     tt = temperature (hex)
