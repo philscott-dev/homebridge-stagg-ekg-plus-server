@@ -113,7 +113,10 @@ export default class Kettle {
     return {
       targetTemp: this.targetTemp,
       currentTemp: this.currentTemp,
-      powerState: this.currentTemp === 32 ? PowerState.Off : PowerState.On,
+      powerState:
+        this.currentTemp === 32 || this.currentTemp === 0
+          ? PowerState.Off
+          : PowerState.On,
     }
   }
 

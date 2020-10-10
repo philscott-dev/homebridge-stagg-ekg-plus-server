@@ -36,17 +36,6 @@ const MAC = process.env.MAC_ADDRESS || ''
       asyncHandler(async (req, res) => {
         const { targetTemp } = req.body
         const temperature = parseInt(targetTemp, 10)
-        if (temperature > 212) {
-          return res
-            .status(422)
-            .json({ error: 'Temperature must be at or below 212' })
-        }
-        if (temperature < 104) {
-          return res
-            .status(422)
-            .json({ error: 'Temperature must at or above 104' })
-        }
-
         await kettle.setTemp(temperature)
         console.log({ temperature })
         res.json({ temperature })
